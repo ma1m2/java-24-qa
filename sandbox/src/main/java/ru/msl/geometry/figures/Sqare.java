@@ -6,7 +6,11 @@ public class Sqare {
     System.out.println(text);
   }
 
-  private static double area(double side) {
+  public static double area(double side) {
     return side * side;
+  }
+
+  public static double perimeter(double side) {
+    return 4 * side;
   }
 }
