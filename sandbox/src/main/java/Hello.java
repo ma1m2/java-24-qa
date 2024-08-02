@@ -3,13 +3,12 @@ import java.io.File;
 public class Hello {
   public static void main(String[] args) {
     try {
-      var z = calculate();
+      int z = calculate();
       System.out.println(z);
-    } catch (ArithmeticException e) {
-      System.out.println(e.getMessage());
-      e.printStackTrace();
+      System.out.println("Hello, World!");
+    } catch (ArithmeticException exception) {
+      exception.printStackTrace();
     }
-    System.out.println("Hello, World!");
 
 /*    var configFile = new File("sandbox/build.gradle");
     System.out.println(configFile.getAbsolutePath());
@@ -17,9 +16,7 @@ public class Hello {
   }
 
   private static int calculate() {
-    var x = 1;
-    var y = 0;
-    var z = divide(x, y);
+    var z = divide(1, 1);
     return z;
   }
 
