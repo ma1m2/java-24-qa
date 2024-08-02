@@ -19,4 +19,71 @@ public class TriangleTest {
     System.out.println(area);
     Assertions.assertEquals(6, area);
   }
+
+  @Test
+  public void cannotCreateTriangleWithOneNegativeSide() {
+    try {
+      new Triangle(-3, 4, 5);
+      Assertions.fail();
+    } catch (IllegalArgumentException e) {
+      System.out.println("I'm in catch block for one negative side");
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Test
+  public void cannotCreateTriangleWithSecondNegativeSide() {
+    try {
+      new Triangle(3, -4, 5);
+      Assertions.fail();
+    } catch (IllegalArgumentException e) {
+      System.out.println("I'm in catch block for second negative side");
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Test
+  public void cannotCreateTriangleWithThirdNegativeSide() {
+    try {
+      new Triangle(3, 4, -5);
+      Assertions.fail();
+    } catch (IllegalArgumentException e) {
+      System.out.println("I'm in catch block for third negative side");
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Test
+  public void violatedTrianglInequalityFirstSide() {
+    try {
+      new Triangle(8, 4, 3);
+      Assertions.fail();
+    } catch (IllegalArgumentException e) {
+      System.out.println("I'm in catch block for first side");
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Test
+  public void violatedTrianglInequalitySecondSide() {
+    try {
+      new Triangle(3, 11, 7);
+      Assertions.fail();
+    } catch (IllegalArgumentException e) {
+      System.out.println("I'm in catch block for second sides");
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Test
+  public void violatedTrianglInequalityThirdSide() {
+    try {
+      new Triangle(3, 6, 10);
+      Assertions.fail();
+    } catch (IllegalArgumentException e) {
+      System.out.println("I'm in catch block for third sidet");
+      System.out.println(e.getMessage());
+    }
+  }
+
 }

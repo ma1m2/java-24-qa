@@ -26,13 +26,8 @@ public class SquareTests {
       Assertions.fail();
     } catch (IllegalArgumentException e) {
       System.out.println("I'm in catch block");
+      System.out.println(e.getMessage());
     }
   }
-
-  @Test
-  public void cannotCreateSquareWithNegativeSideThrowException() {
-    new Square(-4.0);
-  }
-
 
 }
