@@ -1,23 +1,25 @@
-import java.io.File;
-
 public class Hello {
   public static void main(String[] args) {
-    try {
-      int z = calculate();
+    var x = 1;
+    var y = 1;
+    if(y == 0) {
+      System.out.println("Division by zero is not allowed");
+    } else {
+      var z = divide(x, y);
       System.out.println(z);
-      System.out.println("Hello, World!");
-    } catch (ArithmeticException exception) {
-      exception.printStackTrace();
     }
 
+/*    try {
+      var x = 1;
+      var y = 0;
+      var z = divide(x, y);
+      System.out.println(z);
+    } catch (ArithmeticException exception) {
+      System.out.println("Division by zero is not allowed");
+    }*/
 /*    var configFile = new File("sandbox/build.gradle");
     System.out.println(configFile.getAbsolutePath());
     System.out.println(configFile.exists());*/
-  }
-
-  private static int calculate() {
-    var z = divide(1, 1);
-    return z;
   }
 
   private static int divide(int x, int y) {

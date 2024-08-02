@@ -2,6 +2,14 @@ package ru.msl.geometry.figures;
 
 public record Reqtangle (double a, double b) {
 
+  public Reqtangle(double a, double b) {
+    if(a < 0 || b < 0) {
+      throw new IllegalArgumentException("Rectangle side should be non-negative");
+    }
+    this.a = a;
+    this.b = b;
+  }
+
   public static void printRectangleArea(double a, double b) {
     String text = String.format("Area of rectangle with a side %f and a side %f = %f", a, b, rectangleArea(a, b));
     System.out.println(text);
