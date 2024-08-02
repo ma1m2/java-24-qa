@@ -1,7 +1,6 @@
 package ru.msl.geometry.figures;
 
-public class Square {
-  private double side;
+public record Square(double side) {
 
   public Square(double side) {
     if(side < 0) {

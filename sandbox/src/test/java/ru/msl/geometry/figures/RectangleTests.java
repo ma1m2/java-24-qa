@@ -23,4 +23,20 @@ public class RectangleTests {
       System.out.println("I'm in catch block for second negative side");
     }
   }
+
+  @Test
+  public void testEquality() {
+    var r1 = new Reqtangle(4.0, 5.0);
+    var r2 = new Reqtangle(4.0, 5.0);
+    System.out.println(r1 + " = " + r2);
+    Assertions.assertEquals(r1, r2);
+  }
+
+  @Test
+  public void testEquality2() {
+    var r1 = new Reqtangle(4.0, 5.0);
+    var r2 = new Reqtangle(5.0, 4.0);
+    System.out.println(r1 + " = " + r2);
+    Assertions.assertEquals(r1, r2);
+  }
 }

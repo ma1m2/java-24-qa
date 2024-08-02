@@ -30,4 +30,11 @@ public class SquareTests {
     }
   }
 
+  @Test
+  public void testEquality() {
+    var s1 = new Square(4.0);
+    var s2 = new Square(4.0);
+    System.out.println(s1 + " = " + s2);
+    Assertions.assertEquals(s1, s2);
+  }
 }
