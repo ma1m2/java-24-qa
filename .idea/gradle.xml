@@ -6,6 +6,16 @@
       <GradleProjectSettings>
         <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/addressbook" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/addressbook" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="delegatedBuild" value="false" />
+        <option name="testRunner" value="PLATFORM" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/sandbox" />
         <option name="modules">
           <set>
