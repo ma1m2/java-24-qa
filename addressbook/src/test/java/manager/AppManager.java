@@ -1,6 +1,5 @@
 package manager;
 
-import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
@@ -8,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class AppManager {
-  protected static WebDriver driver;
+  protected WebDriver driver;
+  private LoginHelper session;
+  private GroupHelper group;
 
   public void init() {
     if (driver == null) {
@@ -16,16 +17,22 @@ public class AppManager {
       Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
       driver.get("http://localhost/addressbook/");
       driver.manage().window().setSize(new Dimension(1264, 964));
-      driver.findElement(By.name("user")).sendKeys("admin");
-      driver.findElement(By.name("pass")).sendKeys("secret");
-      driver.findElement(By.xpath("//input[@value=\'Login\']")).click();
+      session().login("admin", "secret");
     }
   }
 
-  public void removeGroup() {
-    driver.findElement(By.name("selected[]")).click();
-    driver.findElement(By.name("delete")).click();
-    driver.findElement(By.linkText("groups")).click();
+  public LoginHelper session() {
+    if (session == null) {
+      session = new LoginHelper(this);
+    }
+    return session;
+  }
+
+  public GroupHelper group() {
+    if (group == null) {
+      group = new GroupHelper(this);
+    }
+    return group;
   }
 
   public boolean isElementPresent(By locator) {
@@ -37,25 +44,4 @@ public class AppManager {
     }
   }
 
-  public void createGroup(GroupData group) {
-    driver.findElement(By.name("new")).click();
-    driver.findElement(By.name("group_name")).click();
-    driver.findElement(By.name("group_name")).sendKeys(group.name());
-    driver.findElement(By.name("group_header")).click();
-    driver.findElement(By.name("group_header")).sendKeys(group.header());
-    driver.findElement(By.name("group_footer")).click();
-    driver.findElement(By.name("group_footer")).sendKeys(group.footer());
-    driver.findElement(By.name("submit")).click();
-    driver.findElement(By.linkText("group page")).click();
-  }
-
-  public void openGroupPage() {
-    if (!isElementPresent(By.name("new"))) {
-      driver.findElement(By.linkText("groups")).click();
-    }
-  }
-
-  public boolean isGroupPresent() {
-    return isElementPresent(By.name("selected[]"));
-  }
 }
