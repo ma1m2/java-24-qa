@@ -3,41 +3,79 @@ package manager;
 import model.GroupData;
 import org.openqa.selenium.By;
 
-public class GroupHelper {
-  private final AppManager app;
+public class GroupHelper extends HelperBase{
 
   public GroupHelper(AppManager app) {
-    this.app = app;
-  }
-
-  public void removeGroup() {
-    openGroupPage();
-    app.driver.findElement(By.name("selected[]")).click();
-    app.driver.findElement(By.name("delete")).click();
-    app.driver.findElement(By.linkText("groups")).click();
-  }
-
-  public void openGroupPage() {
-    if (!app.isElementPresent(By.name("new"))) {
-      app.driver.findElement(By.linkText("groups")).click();
-    }
+    super(app);
   }
 
   public void createGroup(GroupData group) {
     openGroupPage();
-    app.driver.findElement(By.name("new")).click();
-    app.driver.findElement(By.name("group_name")).click();
-    app.driver.findElement(By.name("group_name")).sendKeys(group.name());
-    app.driver.findElement(By.name("group_header")).click();
-    app.driver.findElement(By.name("group_header")).sendKeys(group.header());
-    app.driver.findElement(By.name("group_footer")).click();
-    app.driver.findElement(By.name("group_footer")).sendKeys(group.footer());
-    app.driver.findElement(By.name("submit")).click();
-    app.driver.findElement(By.linkText("group page")).click();
+    initGroupCreation();
+    fillGroupForm(group);
+    submitGroupCreation();
+    returnToGroupPage();
+  }
+
+  public void removeGroup() {
+    openGroupPage();
+    selectGroup();
+    removeSelectedGroup();
+    returnToGroupPage();
+  }
+
+  public void modifyGroup(GroupData modifiedGroup) {
+    openGroupPage();
+    selectGroup();
+    initGroupModification();
+    fillGroupForm(modifiedGroup);
+    submitGroupModification();
+    returnToGroupPage();
+  }
+
+  private void removeSelectedGroup() {
+    click(By.name("delete"));
+  }
+
+  public void openGroupPage() {
+    if (!app.isElementPresent(By.name("new"))) {
+      click(By.linkText("groups"));
+    }
+  }
+
+  private void submitGroupCreation() {
+    click(By.name("submit"));
+  }
+
+  private void initGroupCreation() {
+    click(By.name("new"));
   }
 
   public boolean isGroupPresent() {
     openGroupPage();
     return app.isElementPresent(By.name("selected[]"));
   }
+
+  private void returnToGroupPage() {
+    click(By.linkText("group page"));
+  }
+
+  private void submitGroupModification() {
+    click(By.name("update"));
+  }
+
+  private void fillGroupForm(GroupData group) {
+    type(By.name("group_name"), group.name());
+    type(By.name("group_header"), group.header());
+    type(By.name("group_footer"), group.footer());
+  }
+
+  private void initGroupModification() {
+    click(By.name("edit"));
+  }
+
+  private void selectGroup() {
+    click(By.name("selected[]"));
+  }
+
 }
