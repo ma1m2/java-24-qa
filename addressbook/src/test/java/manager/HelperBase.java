@@ -19,4 +19,8 @@ public class HelperBase {
     app.driver.findElement(locator).clear();
     app.driver.findElement(locator).sendKeys(text);
   }
+
+  protected void attachFile(By locator, String photo) {
+    app.driver.findElement(locator).sendKeys(photo);
+  }
 }
