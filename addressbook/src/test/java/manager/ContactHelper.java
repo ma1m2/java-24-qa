@@ -16,6 +16,30 @@ public class ContactHelper extends HelperBase {
     returnToHomePage();
   }
 
+  public void removeContact() {
+    openHomePage();
+    selectContact();
+    removeSelectedContact();
+  }
+
+  private void removeSelectedContact() {
+    click(By.xpath("//input[@value='Delete']"));
+  }
+
+  private void selectContact() {
+    click(By.name("selected[]"));
+  }
+
+  public boolean isGroupPresent() {
+    openHomePage();
+    return app.isElementPresent(By.name("selected[]"));
+  }
+  private void openHomePage() {
+    if (!app.isElementPresent(By.id("search_count"))) {
+      click(By.linkText("home"));
+    }
+  }
+
   private void returnToHomePage() {
     click(By.linkText("home page"));
   }
