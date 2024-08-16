@@ -30,7 +30,7 @@ public class ContactHelper extends HelperBase {
     click(By.name("selected[]"));
   }
 
-  public boolean isGroupPresent() {
+  public boolean isContactPresent() {
     openHomePage();
     return app.isElementPresent(By.name("selected[]"));
   }
