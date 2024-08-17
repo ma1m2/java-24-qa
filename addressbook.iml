@@ -5,7 +5,6 @@
     <content url="file://$MODULE_DIR$/addressbook">
       <excludeFolder url="file://$MODULE_DIR$/addressbook/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/addressbook/build" />
-      <excludeFolder url="file://$MODULE_DIR$/addressbook/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

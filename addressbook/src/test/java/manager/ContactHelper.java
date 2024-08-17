@@ -40,6 +40,20 @@ public class ContactHelper extends HelperBase {
     }
   }
 
+  public String takeNumberOfContact(){
+    openHomePage();
+    return app.driver.findElement(By.id("search_count")).getText();
+  }
+
+  public void modifyContact(ContactData contact) {
+    openHomePage();
+    selectContact();
+    //initContactModification();
+    fillContactForm(contact);
+    //submitContactModification();
+    returnToHomePage();
+  }
+
   private void returnToHomePage() {
     click(By.linkText("home page"));
   }
@@ -65,5 +79,13 @@ public class ContactHelper extends HelperBase {
 
   private void initContactCreation() {
     click(By.linkText("add new"));
+  }
+
+  public void verifyOrCreateAvailableContact() {
+    if(!app.contact().isContactPresent()) {
+      app.contact().createContact(new ContactData().withFirstName("firstname")
+              .withLastName("LastName").withAddress("Address")
+              .withEmail("Email").withMobile("12345"));
+    }
   }
 }
