@@ -20,8 +20,14 @@ public class GroupHelper extends HelperBase{
   public void removeGroup() {
     openGroupPage();
     selectGroup();
-    removeSelectedGroup();
+    removeSelectedGroups();
     returnToGroupPage();
+  }
+
+  public void removeAllGroup() {
+    openGroupPage();
+    selectAllGroups();
+    removeSelectedGroups();
   }
 
   public void modifyGroup(GroupData modifiedGroup) {
@@ -33,7 +39,7 @@ public class GroupHelper extends HelperBase{
     returnToGroupPage();
   }
 
-  private void removeSelectedGroup() {
+  private void removeSelectedGroups() {
     click(By.name("delete"));
   }
 
@@ -78,4 +84,28 @@ public class GroupHelper extends HelperBase{
     click(By.name("selected[]"));
   }
 
+  public int getCount() {
+    openGroupPage();
+    return app.driver.findElements(By.name("selected[]")).size();
+  }
+
+  private void selectAllGroups() {
+    var checkboxes = app.driver.findElements(By.name("selected[]"));
+    for(var checkbox : checkboxes) {
+      checkbox.click();
+    }
+  }
+
+  public void verifyOrCreateAvailableGroup() {
+    if(app.group().getCount() == 0) {
+      app.group().createGroup(new GroupData("group name", "group header", "group footer"));
+    }
+  }
+
+  public void removeAllGroupGPT() {
+    openGroupPage();
+    while (isGroupPresent()) {
+      removeGroup();
+    }
+  }
 }

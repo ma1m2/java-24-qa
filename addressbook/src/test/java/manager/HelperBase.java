@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 
 public class HelperBase {
 
-  protected final AppManager app;
+  protected final AppManager app; //manager
 
   public HelperBase(AppManager app) {
     this.app = app;
