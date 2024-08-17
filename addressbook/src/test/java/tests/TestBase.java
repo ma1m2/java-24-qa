@@ -17,7 +17,7 @@ public class TestBase {
     app.init(System.getProperty("browser", "firefox"));
   }
 
-  public String randomString(int length) {
+  public static String randomString(int length) {
     var rnd = new Random();
     var result = "";
     for (int i = 0; i < length; i++) {
