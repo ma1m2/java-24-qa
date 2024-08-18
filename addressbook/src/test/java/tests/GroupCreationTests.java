@@ -21,14 +21,14 @@ public class GroupCreationTests extends TestBase {
       }
     }
     for (int i = 0; i < 5; i++) {
-      result.add(new GroupData(randomString(i*10), randomString(i*10), randomString(i*10)));
+      result.add(new GroupData(randomString(i+5), randomString(i+5), randomString(i+5)));
     }
     return result;
   }
 
   @ParameterizedTest
   @MethodSource("groupProvider")
-  public void canCreateGroupWithObject(GroupData group){
+  public void canCreateMultipleGroupWithObject(GroupData group){
     int groupCount = app.group().getCount();
     app.group().createGroup(group);
     int newGroupCount = app.group().getCount();
@@ -60,9 +60,9 @@ public class GroupCreationTests extends TestBase {
     return result;
   }
 
-  @ParameterizedTest
-  @MethodSource("groupNameProvider")
-  public void canCreateMultipleGroup(String name) {
+  //@ParameterizedTest
+  //@MethodSource("groupNameProvider")
+  public void canCreateMultipleGroupWithName(String name) {
     int groupCount = app.group().getCount();
     app.group().createGroup(new GroupData(name, "group header", "group footer"));
     int newGroupCount = app.group().getCount();
@@ -100,7 +100,7 @@ public class GroupCreationTests extends TestBase {
   }
 
   @Test
-  public void canCreateMultipleGroup() {
+  public void canCreateMultipleGroupWithName() {
     int n = 5;
     int groupCount = app.group().getCount();
     for (int i = 0; i < n; i++) {

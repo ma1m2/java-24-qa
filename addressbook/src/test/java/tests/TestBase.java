@@ -26,6 +26,15 @@ public class TestBase {
     return result;
   }
 
+  public static String randomNumber(int length) {
+    var rnd = new Random();
+    var result = "";
+    for (int i = 0; i < length; i++) {
+      result = result + (char)('0' + rnd.nextInt(10));
+    }
+    return result;
+  }
+
   public String randomStringGPT(int length) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < length; i++) {

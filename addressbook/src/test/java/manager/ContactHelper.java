@@ -22,6 +22,23 @@ public class ContactHelper extends HelperBase {
     removeSelectedContact();
   }
 
+  public void removeAllContacts() {
+    openHomePage();
+    selectAllContacts();
+    removeSelectedContacts();
+  }
+
+  private void removeSelectedContacts() {
+    removeSelectedContact();
+  }
+
+  private void selectAllContacts() {
+    var checkBoxes = app.driver.findElements(By.name("selected[]"));
+    for (var checkbox : checkBoxes) {
+      checkbox.click();
+    }
+  }
+
   private void removeSelectedContact() {
     click(By.xpath("//input[@value='Delete']"));
   }
@@ -87,5 +104,9 @@ public class ContactHelper extends HelperBase {
               .withLastName("LastName").withAddress("Address")
               .withEmail("Email").withMobile("12345"));
     }
+  }
+
+  public int getCount() {
+    return app.driver.findElements(By.name("selected[]")).size();
   }
 }
