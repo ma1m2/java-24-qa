@@ -3,6 +3,9 @@ package manager;
 import model.GroupData;
 import org.openqa.selenium.By;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GroupHelper extends HelperBase{
 
   public GroupHelper(AppManager app) {
@@ -14,6 +17,13 @@ public class GroupHelper extends HelperBase{
     initGroupCreation();
     fillGroupForm(group);
     submitGroupCreation();
+    returnToGroupPage();
+  }
+
+  public void removeGroup(GroupData group) {
+    openGroupPage();
+    selectGroup(group);
+    removeSelectedGroups();
     returnToGroupPage();
   }
 
@@ -80,6 +90,11 @@ public class GroupHelper extends HelperBase{
     click(By.name("edit"));
   }
 
+  private void selectGroup(GroupData group) {
+    //click(By.cssSelector("input[value='" + group.id() + "']"));
+    click(By.cssSelector(String.format("input[value='%s'" , group.id())));
+  }
+
   private void selectGroup() {
     click(By.name("selected[]"));
   }
@@ -98,7 +113,7 @@ public class GroupHelper extends HelperBase{
 
   public void verifyOrCreateAvailableGroup() {
     if(app.group().getCount() == 0) {
-      app.group().createGroup(new GroupData("group name", "group header", "group footer"));
+      app.group().createGroup(new GroupData("", "group name", "group header", "group footer"));
     }
   }
 
@@ -107,5 +122,17 @@ public class GroupHelper extends HelperBase{
     while (isGroupPresent()) {
       removeGroup();
     }
+  }
+
+  public List<GroupData> getList() {
+    openGroupPage();
+    var groups = new ArrayList<GroupData>();
+    var spans = app.driver.findElements(By.cssSelector("span.group"));
+    for (var span : spans) {
+      var nsme = span.getText();
+      var id = span.findElement(By.tagName("input")).getAttribute("value");
+      groups.add(new GroupData().withId(id).withName(nsme));
+    }
+    return groups;
   }
 }
