@@ -40,7 +40,16 @@ public class GroupHelper extends HelperBase{
     removeSelectedGroups();
   }
 
-  public void modifyGroup(GroupData modifiedGroup) {
+  public void modifyGroup(GroupData group, GroupData modifiedGroup) {
+    openGroupPage();
+    selectGroup(group);
+    initGroupModification();
+    fillGroupForm(modifiedGroup);
+    submitGroupModification();
+    returnToGroupPage();
+  }
+
+  public void modifyGroupOld(GroupData modifiedGroup) {
     openGroupPage();
     selectGroup();
     initGroupModification();
