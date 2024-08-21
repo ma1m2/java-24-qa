@@ -3,6 +3,10 @@ package manager;
 import model.ContactData;
 import org.openqa.selenium.By;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 public class ContactHelper extends HelperBase {
 
   public ContactHelper(AppManager app) {
@@ -108,5 +112,25 @@ public class ContactHelper extends HelperBase {
 
   public int getCount() {
     return app.driver.findElements(By.name("selected[]")).size();
+  }
+
+  public List<ContactData> getLictNames() {
+    openHomePage();
+    var contacts = new ArrayList<ContactData>();
+    var rows = app.driver.findElements(By.cssSelector("tr[name=entry]"));
+    for (var row : rows) {
+      var id = row.findElement(By.tagName("input")).getAttribute("value");
+      var lastName = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
+      var firstName = row.findElement(By.cssSelector("td:nth-child(3)")).getText();
+      contacts.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName));
+      System.out.println("Id: " + id + " LastName: " + lastName + " FirstName: " + firstName);
+    }
+    return contacts;
+  }
+
+  public Comparator<ContactData> sortById() {
+    return (o1, o2) -> {
+      return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+    };
   }
 }

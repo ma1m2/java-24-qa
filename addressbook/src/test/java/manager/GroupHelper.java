@@ -138,9 +138,9 @@ public class GroupHelper extends HelperBase{
     var groups = new ArrayList<GroupData>();
     var spans = app.driver.findElements(By.cssSelector("span.group"));
     for (var span : spans) {
-      var nsme = span.getText();
+      var name = span.getText();
       var id = span.findElement(By.tagName("input")).getAttribute("value");
-      groups.add(new GroupData().withId(id).withName(nsme));
+      groups.add(new GroupData().withId(id).withName(name));
     }
     return groups;
   }
