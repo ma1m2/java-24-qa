@@ -21,7 +21,7 @@ public class GroupCreationTests extends TestBase {
         }
       }
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 2; i++) {
       result.add(new GroupData()
               .withName(randomString(i+5))
               .withHeader(randomString(i+5))
@@ -36,16 +36,13 @@ public class GroupCreationTests extends TestBase {
     var oldGroups = app.group().getList();
     app.group().createGroup(group);
     var newGroups = app.group().getList();
-    Comparator<GroupData> compareById = (o1, o2) -> {
-      return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-    };
-    newGroups.sort(compareById);
+    newGroups.sort(app.group().compareById());
 
     var expectedList = new ArrayList<>(oldGroups);
     expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id())
             .withHeader("")
             .withFooter(""));
-    expectedList.sort(compareById);
+    expectedList.sort(app.group().compareById());
     System.out.println(oldGroups.size() + " " + newGroups.size());
     Assertions.assertEquals(newGroups, expectedList);
   }

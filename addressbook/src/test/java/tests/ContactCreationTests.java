@@ -1,14 +1,12 @@
 package tests;
 
 import model.ContactData;
-import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
@@ -29,10 +27,10 @@ public class ContactCreationTests extends TestBase {
     var oldContacts = app.contact().getLictNames();
     app.contact().createContact(contact);
     var newContacts = app.contact().getLictNames();
-    newContacts.sort(app.contact().sortById());
+    newContacts.sort(app.contact().compareById());
     var expectedList = new ArrayList<>(oldContacts);
     expectedList.add(newContacts.get(newContacts.size() - 1));
-    expectedList.sort(app.contact().sortById());
+    expectedList.sort(app.contact().compareById());
     Assertions.assertEquals(expectedList, newContacts);
   }
 

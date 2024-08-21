@@ -14,7 +14,7 @@ public class ContactRemovalTests extends TestBase {
     var oldContacts = app.contact().getLictNames();
     var rnd = new Random();
     int index = rnd.nextInt(oldContacts.size());
-    app.contact().removeContact(oldContacts.get(index));
+    app.contact().removeContactById(oldContacts.get(index));
     var newContacts = app.contact().getLictNames();
     var expectedList = new ArrayList<>(oldContacts);
     expectedList.remove(index);
@@ -32,16 +32,16 @@ public class ContactRemovalTests extends TestBase {
   }
 
   @Test
-  public void canRemoveContactOld() {
+  public void canRemoveAnyContact() {
     app.contact().verifyOrCreateAvailableContact();
-    app.contact().removeContact();
+    app.contact().removeAnyContact();
   }
 
   @Test
   public void chechNumberOfContactsAfterRemoval(){
     System.out.println("Before " + app.contact().takeNumberOfContact());
     app.contact().verifyOrCreateAvailableContact();
-    app.contact().removeContact();
+    app.contact().removeAnyContact();
     System.out.println("After " + app.contact().takeNumberOfContact());
   }
 }

@@ -1,8 +1,10 @@
 package tests;
 
 import manager.AppManager;
+import model.GroupData;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.Comparator;
 import java.util.Random;
 
 public class TestBase {

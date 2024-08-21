@@ -4,6 +4,7 @@ import model.GroupData;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GroupHelper extends HelperBase{
@@ -143,5 +144,11 @@ public class GroupHelper extends HelperBase{
       groups.add(new GroupData().withId(id).withName(name));
     }
     return groups;
+  }
+
+  public Comparator<GroupData> compareById() {
+    return (o1, o2) -> {
+      return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+    };
   }
 }

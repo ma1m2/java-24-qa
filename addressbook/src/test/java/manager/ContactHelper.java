@@ -20,15 +20,24 @@ public class ContactHelper extends HelperBase {
     returnToHomePage();
   }
 
-  public void removeContact(ContactData contact) {
+  public void modifyContact(ContactData contact, ContactData modifiedContact) {
     openHomePage();
-    selectContact(contact);
+    selectContactById(contact);
+    initContactModification(contact);
+    fillContactForm(modifiedContact);
+    submitContactUpdate();
+    returnToHomePage();
+  }
+
+  public void removeContactById(ContactData contact) {
+    openHomePage();
+    selectContactById(contact);
     removeSelectedContact();
   }
 
-  public void removeContact() {
+  public void removeAnyContact() {
     openHomePage();
-    selectContact();
+    selectAnyContact();
     removeSelectedContact();
   }
 
@@ -38,8 +47,13 @@ public class ContactHelper extends HelperBase {
     removeSelectedContacts();
   }
 
-  private void removeSelectedContacts() {
-    removeSelectedContact();
+  private void initContactModification(ContactData contact) {
+    var xpath = String.format("//tr[@name=\"entry\"]/td/input[@id='%s']/../..//img[@title='Edit']", contact.id());
+    click(By.xpath(xpath));
+  }
+
+  private void submitContactUpdate() {
+    click(By.cssSelector("input[value=Update]"));
   }
 
   private void selectAllContacts() {
@@ -49,16 +63,20 @@ public class ContactHelper extends HelperBase {
     }
   }
 
+  private void removeSelectedContacts() {
+    removeSelectedContact();
+  }
+
   private void removeSelectedContact() {
     click(By.xpath("//input[@value='Delete']"));
   }
 
-  private void selectContact(ContactData contact) {
+  private void selectContactById(ContactData contact) {
     var css = String.format("tr[name=entry] input[id='%s']", contact.id());
     click(By.cssSelector(css));
   }
 
-  private void selectContact() {
+  private void selectAnyContact() {
     click(By.name("selected[]"));
   }
 
@@ -77,14 +95,6 @@ public class ContactHelper extends HelperBase {
     return app.driver.findElement(By.id("search_count")).getText();
   }
 
-  public void modifyContact(ContactData contact) {
-    openHomePage();
-    selectContact();
-    //initContactModification();
-    fillContactForm(contact);
-    //submitContactModification();
-    returnToHomePage();
-  }
 
   private void returnToHomePage() {
     click(By.linkText("home page"));
@@ -139,7 +149,7 @@ public class ContactHelper extends HelperBase {
     return contacts;
   }
 
-  public Comparator<ContactData> sortById() {
+  public Comparator<ContactData> compareById() {
     return (o1, o2) -> {
       return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
     };
