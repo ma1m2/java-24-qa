@@ -13,12 +13,6 @@ import java.util.List;
 
 public class ContactCreationTests extends TestBase {
 
-  @Test
-  public void canCreateContactTest() {
-    var oldContacts = app.contact().getLictNames();
-    System.out.println(oldContacts);
-  }
-
   public static List<ContactData> contactProviderWithNames() {
     var result = new ArrayList<ContactData>();
     for (int i = 0; i < 2; i++) {

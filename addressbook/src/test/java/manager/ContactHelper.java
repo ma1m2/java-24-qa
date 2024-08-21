@@ -20,6 +20,12 @@ public class ContactHelper extends HelperBase {
     returnToHomePage();
   }
 
+  public void removeContact(ContactData contact) {
+    openHomePage();
+    selectContact(contact);
+    removeSelectedContact();
+  }
+
   public void removeContact() {
     openHomePage();
     selectContact();
@@ -45,6 +51,11 @@ public class ContactHelper extends HelperBase {
 
   private void removeSelectedContact() {
     click(By.xpath("//input[@value='Delete']"));
+  }
+
+  private void selectContact(ContactData contact) {
+    var css = String.format("tr[name=entry] input[id='%s']", contact.id());
+    click(By.cssSelector(css));
   }
 
   private void selectContact() {
