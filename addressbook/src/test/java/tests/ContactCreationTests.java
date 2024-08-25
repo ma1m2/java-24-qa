@@ -16,7 +16,7 @@ public class ContactCreationTests extends TestBase {
     app.contact().createContact(new ContactData()
             .withFirstName(randomString(10))
             .withLastName(randomString(10))
-            .withPhoto("src/test/resources/images/Poops.png"));
+            .withPhoto(randomFile("src/test/resources/images")));
   }
 
   public static List<ContactData> contactProviderWithNames() {
