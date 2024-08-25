@@ -2,6 +2,8 @@ package manager;
 
 import org.openqa.selenium.By;
 
+import java.nio.file.Paths;
+
 public class HelperBase {
 
   protected final AppManager app; //manager
@@ -21,6 +23,6 @@ public class HelperBase {
   }
 
   protected void attachFile(By locator, String photo) {
-    app.driver.findElement(locator).sendKeys(photo);
+    app.driver.findElement(locator).sendKeys(Paths.get(photo).toAbsolutePath().toString());
   }
 }

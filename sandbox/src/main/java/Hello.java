@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class Hello {
   public static void main(String[] args) {
     var x = 1;
@@ -17,9 +19,10 @@ public class Hello {
     } catch (ArithmeticException exception) {
       System.out.println("Division by zero is not allowed");
     }*/
-/*    var configFile = new File("sandbox/build.gradle");
+    var configFile = new File("sandbox/build.gradle");
     System.out.println(configFile.getAbsolutePath());
-    System.out.println(configFile.exists());*/
+    System.out.println(new File("").getAbsolutePath());
+    System.out.println(configFile.exists());
   }
 
   private static int divide(int x, int y) {

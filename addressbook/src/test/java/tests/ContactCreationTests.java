@@ -11,6 +11,14 @@ import java.util.List;
 
 public class ContactCreationTests extends TestBase {
 
+  @Test
+  public void canCreateContactWithPhoto() {
+    app.contact().createContact(new ContactData()
+            .withFirstName(randomString(10))
+            .withLastName(randomString(10))
+            .withPhoto("src/test/resources/images/Poops.png"));
+  }
+
   public static List<ContactData> contactProviderWithNames() {
     var result = new ArrayList<ContactData>();
     for (int i = 0; i < 2; i++) {
