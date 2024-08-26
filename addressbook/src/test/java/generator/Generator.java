@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import model.GroupData;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -33,17 +34,7 @@ public class Generator {
 
   private void run() throws IOException {
     var data = generate();
-    save(data);
-  }
-
-  private void save(Object data) throws IOException {
-    if ("json".equals(format)) {
-      ObjectMapper mapper = new ObjectMapper();
-      mapper.enable(SerializationFeature.INDENT_OUTPUT);
-      mapper.writeValue(new File(output), data);
-    }else {
-      throw new IllegalArgumentException("Unrecognized format: " + format);
-    }
+    save2(data);
   }
 
   private Object generate() {
@@ -58,12 +49,29 @@ public class Generator {
     }
   }
 
-  private Object generateAll() {
-    return null;
+  private void save(Object data) throws IOException {
+    if ("json".equals(format)) {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.enable(SerializationFeature.INDENT_OUTPUT);
+      mapper.writeValue(new File(output), data);
+    }else {
+      throw new IllegalArgumentException("Unrecognized format: " + format);
+    }
   }
 
-  private Object generateContacts() {
-    return null;
+  private void save2(Object data) throws IOException {
+    if ("json".equals(format)) {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.enable(SerializationFeature.INDENT_OUTPUT);
+      var json = mapper.writeValueAsString(data);
+
+      try(FileWriter writer = new FileWriter(output)) {
+        writer.write(json);
+      }
+
+    }else {
+      throw new IllegalArgumentException("Unrecognized format: " + format);
+    }
   }
 
   private Object generateGroups() {
@@ -77,4 +85,11 @@ public class Generator {
     return result;
   }
 
+  private Object generateContacts() {
+    return null;
+  }
+
+  private Object generateAll() {
+    return null;
+  }
 }

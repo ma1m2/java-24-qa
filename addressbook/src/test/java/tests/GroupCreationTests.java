@@ -10,13 +10,42 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class GroupCreationTests extends TestBase {
+
+  public static List<GroupData> groupProviderJson3() throws IOException {
+    var result = new ArrayList<GroupData>();
+    var json = "";
+    try(var reader = new FileReader(  "groups.json"); var br = new BufferedReader(reader)) {
+      var line = br.readLine();
+      while (line != null) {
+        json = json + line;
+        line = br.readLine();
+      }
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    var value = mapper.readValue(json, new TypeReference<List<GroupData>>(){});
+    result.addAll(value);
+    return result;
+  }
+
+  public static List<GroupData> groupProviderJson2() throws IOException {
+    var result = new ArrayList<GroupData>();
+    var json = Files.readString(Paths.get("groups.json"));
+    ObjectMapper mapper = new ObjectMapper();
+    var value = mapper.readValue(json, new TypeReference<List<GroupData>>(){});
+    result.addAll(value);
+    return result;
+  }
 
   public static List<GroupData> groupProviderJson() throws IOException {
     var result = new ArrayList<GroupData>();
@@ -27,7 +56,7 @@ public class GroupCreationTests extends TestBase {
   }
 
   @ParameterizedTest
-  @MethodSource("groupProviderJson")
+  @MethodSource("groupProviderJson3")
   public void canCreateGroupsFromFile(GroupData group){
     var oldGroups = app.group().getList();
     app.group().createGroup(group);
