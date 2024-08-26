@@ -2,6 +2,7 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.Util;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +22,31 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class GroupCreationTests extends TestBase {
+
+  public static List<GroupData> groupProviderXml() throws IOException {
+    var result = new ArrayList<GroupData>();
+    var mapper = new XmlMapper();
+    var value = mapper.readValue(new File("groups.xml"), new TypeReference<List<GroupData>>(){});
+    result.addAll(value);
+    return result;
+  }
+
+  @ParameterizedTest
+  @MethodSource("groupProviderXml")
+  public void canCreateGroupsFromXmlFile(GroupData group){
+    var oldGroups = app.group().getList();
+    app.group().createGroup(group);
+    var newGroups = app.group().getList();
+    newGroups.sort(app.group().compareById());
+
+    var expectedList = new ArrayList<>(oldGroups);
+    expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id())
+            .withHeader("")
+            .withFooter(""));
+    expectedList.sort(app.group().compareById());
+    System.out.println(oldGroups.size() + " " + newGroups.size());
+    Assertions.assertEquals(newGroups, expectedList);
+  }
 
   public static List<GroupData> groupProviderJson3() throws IOException {
     var result = new ArrayList<GroupData>();
