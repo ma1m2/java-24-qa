@@ -1,5 +1,6 @@
 package tests;
 
+import common.Util;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -7,7 +8,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class GroupCreationTests extends TestBase {
@@ -23,9 +23,9 @@ public class GroupCreationTests extends TestBase {
     }
     for (int i = 0; i < 2; i++) {
       result.add(new GroupData()
-              .withName(randomString(i+5))
-              .withHeader(randomString(i+5))
-              .withFooter(randomString(i+5)));
+              .withName(Util.randomString(i+5))
+              .withHeader(Util.randomString(i+5))
+              .withFooter(Util.randomString(i+5)));
     }
     return result;
   }
@@ -86,7 +86,7 @@ public class GroupCreationTests extends TestBase {
   public static List<String> groupNameProvider() {
     var result = new ArrayList<String>(List.of("group", "name", "group name"));
     for(int i = 0; i < 4; i++) {
-      result.add(randomString(i*10));
+      result.add(Util.randomString(i*10));
     }
     return result;
   }

@@ -1,5 +1,6 @@
 package tests;
 
+import common.Util;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,17 +15,17 @@ public class ContactCreationTests extends TestBase {
   @Test
   public void canCreateContactWithPhoto() {
     app.contact().createContact(new ContactData()
-            .withFirstName(randomString(10))
-            .withLastName(randomString(10))
-            .withPhoto(randomFile("src/test/resources/images")));
+            .withFirstName(Util.randomString(10))
+            .withLastName(Util.randomString(10))
+            .withPhoto(Util.randomFile("src/test/resources/images")));
   }
 
   public static List<ContactData> contactProviderWithNames() {
     var result = new ArrayList<ContactData>();
     for (int i = 0; i < 2; i++) {
       result.add(new ContactData()
-              .withFirstName(randomString(i + 5))
-              .withLastName(randomString(i + 5)));
+              .withFirstName(Util.randomString(i + 5))
+              .withLastName(Util.randomString(i + 5)));
     }
     return result;
   }
@@ -46,12 +47,12 @@ public class ContactCreationTests extends TestBase {
   public static List<ContactData> contactProvider() {
     var result = new ArrayList<ContactData>();
     for (int i = 0; i < 5; i++) {
-      result.add(new ContactData().withFirstName(randomString(i + 5))
-              .withLastName(randomString(i + 5))
-              .withAddress(randomString(i + 5) + ", " + randomNumber(2) +
-                      ", " + randomString(i + 5) + ", " + randomNumber(3))
-              .withEmail(randomString(i + 5) + "@mail.ru")
-              .withMobile(randomNumber(10)));
+      result.add(new ContactData().withFirstName(Util.randomString(i + 5))
+              .withLastName(Util.randomString(i + 5))
+              .withAddress(Util.randomString(i + 5) + ", " + Util.randomNumber(2) +
+                      ", " + Util.randomString(i + 5) + ", " + Util.randomNumber(3))
+              .withEmail(Util.randomString(i + 5) + "@mail.ru")
+              .withMobile(Util.randomNumber(10)));
     }
     return result;
   }
