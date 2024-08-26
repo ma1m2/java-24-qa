@@ -1,16 +1,47 @@
 package tests;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Util;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class GroupCreationTests extends TestBase {
+
+  public static List<GroupData> groupProviderJson() throws IOException {
+    var result = new ArrayList<GroupData>();
+    ObjectMapper mapper = new ObjectMapper();
+    var value = mapper.readValue(new File("groups.json"), new TypeReference<List<GroupData>>(){});
+    result.addAll(value);
+    return result;
+  }
+
+  @ParameterizedTest
+  @MethodSource("groupProviderJson")
+  public void canCreateGroupsFromFile(GroupData group){
+    var oldGroups = app.group().getList();
+    app.group().createGroup(group);
+    var newGroups = app.group().getList();
+    newGroups.sort(app.group().compareById());
+
+    var expectedList = new ArrayList<>(oldGroups);
+    expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id())
+            .withHeader("")
+            .withFooter(""));
+    expectedList.sort(app.group().compareById());
+    System.out.println(oldGroups.size() + " " + newGroups.size());
+    Assertions.assertEquals(newGroups, expectedList);
+  }
 
   public static List<GroupData> groupProvider() {
     var result = new ArrayList<GroupData>();
