@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import model.GroupData;
 
 import java.io.File;
@@ -34,7 +35,7 @@ public class Generator {
 
   private void run() throws IOException {
     var data = generate();
-    save2(data);
+    save(data);
   }
 
   private Object generate() {
@@ -54,7 +55,11 @@ public class Generator {
       ObjectMapper mapper = new ObjectMapper();
       mapper.enable(SerializationFeature.INDENT_OUTPUT);
       mapper.writeValue(new File(output), data);
-    }else {
+    }else if("yaml".equals(format)) {
+      ObjectMapper mapper = new YAMLMapper();
+      mapper.writeValue(new File(output), data);
+    }
+    else {
       throw new IllegalArgumentException("Unrecognized format: " + format);
     }
   }
