@@ -7,13 +7,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.Properties;
+
 public class AppManager {
   protected WebDriver driver;
   private LoginHelper session;
   private GroupHelper group;
   private ContactHelper contact;
+  private Properties prop;
 
-  public void init(String browser) {
+  public void init(String browser, Properties prop) {
+    this.prop = prop;
     if (driver == null) {
       if("chrome".equals(browser)) {
         driver = new ChromeDriver();
@@ -23,9 +27,9 @@ public class AppManager {
         throw new IllegalArgumentException(String.format("Unrecognized browser: %s", browser));
       }
       Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
-      driver.get("http://localhost/addressbook/");
+      driver.get(prop.getProperty("web.baseUrl"));
       driver.manage().window().setSize(new Dimension(1264, 964));
-      session().login("admin", "secret");
+      session().login(prop.getProperty("web.username"), prop.getProperty("web.password"));
     }
   }
 

@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 public class Util {
+
   public static String randomFile(String dir) {
     var fileNames = new File(dir).list();
     var rnd = new Random();
@@ -28,5 +29,13 @@ public class Util {
       result = result + (char)('0' + rnd.nextInt(10));
     }
     return result;
+  }
+
+  public String randomStringGPT(int length) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < length; i++) {
+      sb.append((char) ('a' + (int) (Math.random() * 26)));
+    }
+    return sb.toString();
   }
 }

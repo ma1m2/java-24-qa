@@ -3,24 +3,23 @@ package tests;
 import manager.AppManager;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 public class TestBase {
   protected static AppManager app;
   //protected AppManager app;
 
   @BeforeEach
-  public void setUp() {
+  public void setUp() throws IOException {
     if(app== null) {
+      var prop = new Properties();
+      prop.load(new FileReader(System.getProperty("target", "local.properties")));
       app = new AppManager();
+      app.init(System.getProperty("browser", "firefox"), prop);
     }
-    app.init(System.getProperty("browser", "firefox"));
-  }
-
-  public String randomStringGPT(int length) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < length; i++) {
-      sb.append((char) ('a' + (int) (Math.random() * 26)));
-    }
-    return sb.toString();
   }
 
   /*  @AfterEach
