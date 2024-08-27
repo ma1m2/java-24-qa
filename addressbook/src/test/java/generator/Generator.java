@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import model.ContactData;
 import model.GroupData;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static common.Util.randomFile;
 import static common.Util.randomString;
 
 public class Generator {
@@ -95,7 +97,14 @@ public class Generator {
   }
 
   private Object generateContacts() {
-    return null;
+    var result = new ArrayList<ContactData>();
+    for (int i = 0; i < count; i++) {
+      result.add(new ContactData()
+              .withFirstName(randomString(i*5))
+              .withLastName(randomString(i*5))
+              .withPhoto(randomFile("src/test/resources/images")));
+    }
+    return result;
   }
 
   private Object generateAll() {

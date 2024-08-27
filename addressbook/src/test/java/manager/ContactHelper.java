@@ -144,7 +144,7 @@ public class ContactHelper extends HelperBase {
       var lastName = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
       var firstName = row.findElement(By.cssSelector("td:nth-child(3)")).getText();
       contacts.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName));
-      System.out.println("Id: " + id + " LastName: " + lastName + " FirstName: " + firstName);
+      //System.out.println("Id: " + id + " LastName: " + lastName + " FirstName: " + firstName);
     }
     return contacts;
   }

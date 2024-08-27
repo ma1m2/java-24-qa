@@ -1,16 +1,45 @@
 package tests;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.Util;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ContactCreationTests extends TestBase {
+
+  public static List<ContactData> contactProviderFromJson() throws IOException {
+    var result = new ArrayList<ContactData>();
+    var mapper = new ObjectMapper();
+    var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>(){});
+    result.addAll(value);
+    return result;
+  }
+
+  @ParameterizedTest
+  @MethodSource("contactProviderFromJson")
+  public void canCreateContactFromJson(ContactData contact) {
+    var oldContacts = app.contact().getLictNames();
+    app.contact().createContact(contact);
+    var newContacts = app.contact().getLictNames();
+    newContacts.sort(app.contact().compareById());
+    var expectedList = new ArrayList<>(oldContacts);
+    expectedList.add(newContacts.get(newContacts.size() - 1));
+    expectedList.sort(app.contact().compareById());
+    Assertions.assertEquals(expectedList, newContacts);
+  }
 
   @Test
   public void canCreateContactWithPhoto() {
@@ -24,8 +53,8 @@ public class ContactCreationTests extends TestBase {
     var result = new ArrayList<ContactData>();
     for (int i = 0; i < 2; i++) {
       result.add(new ContactData()
-              .withFirstName(Util.randomString(i + 5))
-              .withLastName(Util.randomString(i + 5)));
+              .withFirstName(Util.randomString(i * 5))
+              .withLastName(Util.randomString(i * 5)));
     }
     return result;
   }
