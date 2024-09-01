@@ -16,6 +16,7 @@ public class AppManager {
   private ContactHelper contact;
   private Properties prop;
   private JdbcHelper jdbc;
+  private HbmHelper hbm;
 
   public void init(String browser, Properties prop) {
     this.prop = prop;
@@ -60,6 +61,13 @@ public class AppManager {
       jdbc = new JdbcHelper(this);
     }
     return jdbc;
+  }
+
+  public HbmHelper hbm() {
+    if (hbm == null) {
+      hbm = new HbmHelper(this);
+    }
+    return hbm;
   }
 
   public boolean isElementPresent(By locator) {

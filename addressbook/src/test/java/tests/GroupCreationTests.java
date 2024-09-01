@@ -23,6 +23,21 @@ import java.util.List;
 import static common.Util.randomString;
 
 public class GroupCreationTests extends TestBase {
+  //video 6.2
+  @ParameterizedTest
+  @MethodSource("singleDataGroup")
+  public void canCreateGroupHbm(GroupData group) {
+    var oldGroups = app.hbm().getGroupList();
+    app.group().createGroup(group);
+    var newGroups = app.hbm().getGroupList();
+    newGroups.sort(app.group().compareById());
+    var expectedList = new ArrayList<>(oldGroups);
+    var maxId = newGroups.get(newGroups.size() - 1).id();
+    expectedList.add(group.withId(maxId));
+    expectedList.sort(app.group().compareById());
+    System.out.println(oldGroups.size() + " " + newGroups.size());
+    Assertions.assertEquals(newGroups, expectedList);
+  }
 
   //video 6.1
   public static List<GroupData> singleDataGroup() {
@@ -45,7 +60,7 @@ public class GroupCreationTests extends TestBase {
     expectedList.sort(app.group().compareById());
     System.out.println(oldGroups.size() + " " + newGroups.size());
     Assertions.assertEquals(newGroups, expectedList);
-
+  //===compare UI and DB list of group===
     var newUiGroups = app.group().getList();
     newUiGroups.sort(app.group().compareById());
     var newDbGoups = app.jdbc().getListWithIdAndName();
