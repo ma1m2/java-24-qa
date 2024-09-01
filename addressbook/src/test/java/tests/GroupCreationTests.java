@@ -19,10 +19,42 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+
+import static common.Util.randomString;
 
 public class GroupCreationTests extends TestBase {
 
+  //video 6.1
+  public static List<GroupData> singleDataGroup() {
+    return List.of(new GroupData()
+            .withName(randomString(10))
+            .withHeader(randomString(20))
+            .withFooter(randomString(30)));
+  }
+
+  @ParameterizedTest
+  @MethodSource("singleDataGroup")
+  public void canCreateGroupJdbc(GroupData group){
+    var oldGroups = app.jdbc().getGroupList();
+    app.group().createGroup(group);
+    var newGroups = app.jdbc().getGroupList();
+    newGroups.sort(app.group().compareById());
+    var expectedList = new ArrayList<>(oldGroups);
+    var maxId = newGroups.get(newGroups.size()-1).id();
+    expectedList.add(group.withId(maxId));
+    expectedList.sort(app.group().compareById());
+    System.out.println(oldGroups.size() + " " + newGroups.size());
+    Assertions.assertEquals(newGroups, expectedList);
+
+    var newUiGroups = app.group().getList();
+    newUiGroups.sort(app.group().compareById());
+    var newDbGoups = app.jdbc().getListWithIdAndName();
+    newDbGoups.sort(app.group().compareById());
+    Assertions.assertEquals(newUiGroups, newDbGoups);
+
+  }
+
+  //video 5.7
   public static List<GroupData> groupProviderXml() throws IOException {
     var result = new ArrayList<GroupData>();
     var mapper = new XmlMapper();
@@ -109,9 +141,9 @@ public class GroupCreationTests extends TestBase {
     }
     for (int i = 0; i < 2; i++) {
       result.add(new GroupData()
-              .withName(Util.randomString(i+5))
-              .withHeader(Util.randomString(i+5))
-              .withFooter(Util.randomString(i+5)));
+              .withName(randomString(i+5))
+              .withHeader(randomString(i+5))
+              .withFooter(randomString(i+5)));
     }
     return result;
   }
@@ -172,7 +204,7 @@ public class GroupCreationTests extends TestBase {
   public static List<String> groupNameProvider() {
     var result = new ArrayList<String>(List.of("group", "name", "group name"));
     for(int i = 0; i < 4; i++) {
-      result.add(Util.randomString(i*10));
+      result.add(randomString(i*10));
     }
     return result;
   }

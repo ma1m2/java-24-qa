@@ -15,6 +15,7 @@ public class AppManager {
   private GroupHelper group;
   private ContactHelper contact;
   private Properties prop;
+  private JdbcHelper jdbc;
 
   public void init(String browser, Properties prop) {
     this.prop = prop;
@@ -52,6 +53,13 @@ public class AppManager {
       contact = new ContactHelper(this);
     }
     return contact;
+  }
+
+  public JdbcHelper jdbc() {
+    if (jdbc == null) {
+      jdbc = new JdbcHelper(this);
+    }
+    return jdbc;
   }
 
   public boolean isElementPresent(By locator) {
