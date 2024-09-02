@@ -1,7 +1,9 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,11 +15,24 @@ public class ContactHelper extends HelperBase {
     super(app);
   }
 
-  public void createContact(ContactData contactData) {
+  public void create(ContactData contactData) {
     initContactCreation();
     fillContactForm(contactData);
     submitContactCreation();
     returnToHomePage();
+  }
+
+  public void create(ContactData contactData, GroupData group) {
+    initContactCreation();
+    fillContactForm(contactData);
+    selectGroup(group);
+    submitContactCreation();
+    returnToHomePage();
+  }
+
+  private void selectGroup(GroupData group) {
+    new Select(app.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+
   }
 
   public void modifyContact(ContactData contact, ContactData modifiedContact) {
@@ -125,7 +140,7 @@ public class ContactHelper extends HelperBase {
 
   public void verifyOrCreateAvailableContact() {
     if(!app.contact().isContactPresent()) {
-      app.contact().createContact(new ContactData().withFirstName("firstname")
+      app.contact().create(new ContactData().withFirstName("firstname")
               .withLastName("LastName").withAddress("Address")
               .withEmail("Email").withMobile("12345"));
     }

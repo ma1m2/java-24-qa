@@ -2,24 +2,37 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.Util;
 import model.ContactData;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class ContactCreationTests extends TestBase {
+  //video 6.4
+  @Test
+  public void canCreateContactInGroup() {
+    var contact = new ContactData()
+            .withFirstName(Util.randomString(10))
+            .withLastName(Util.randomString(10))
+            .withAddress(Util.randomString(10));
+    app.hbm().verifyOrCreateAvailableGroupHbm();
+    var group = app.hbm().getGroupList().get(0);
 
+    var oldRelated = app.hbm().getContactsInGroup(group);
+    app.contact().create(contact, group);
+    var newRelated = app.hbm().getContactsInGroup(group);
+    System.out.println(oldRelated.size() + " " + newRelated.size());
+    Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+  }
+  //============================================
   public static List<ContactData> contactProviderFromJson() throws IOException {
     var result = new ArrayList<ContactData>();
     var mapper = new ObjectMapper();
@@ -32,7 +45,7 @@ public class ContactCreationTests extends TestBase {
   @MethodSource("contactProviderFromJson")
   public void canCreateContactFromJson(ContactData contact) {
     var oldContacts = app.contact().getLictNames();
-    app.contact().createContact(contact);
+    app.contact().create(contact);
     var newContacts = app.contact().getLictNames();
     newContacts.sort(app.contact().compareById());
     var expectedList = new ArrayList<>(oldContacts);
@@ -43,7 +56,7 @@ public class ContactCreationTests extends TestBase {
 
   @Test
   public void canCreateContactWithPhoto() {
-    app.contact().createContact(new ContactData()
+    app.contact().create(new ContactData()
             .withFirstName(Util.randomString(10))
             .withLastName(Util.randomString(10))
             .withPhoto(Util.randomFile("src/test/resources/images")));
@@ -63,7 +76,7 @@ public class ContactCreationTests extends TestBase {
   @MethodSource("contactProviderWithNames")
   public void canCreateContactWithNames(ContactData contact) {
     var oldContacts = app.contact().getLictNames();
-    app.contact().createContact(contact);
+    app.contact().create(contact);
     var newContacts = app.contact().getLictNames();
     newContacts.sort(app.contact().compareById());
     var expectedList = new ArrayList<>(oldContacts);
@@ -90,7 +103,7 @@ public class ContactCreationTests extends TestBase {
   @MethodSource("contactProvider")
   public void canCreateMultipleContact(ContactData contact) {
     int contactCount = app.contact().getCount();
-    app.contact().createContact(contact);
+    app.contact().create(contact);
     int newContactCount = app.contact().getCount();
     System.out.println(contactCount + " " + newContactCount);
     Assertions.assertEquals(contactCount + 1, newContactCount);
@@ -98,7 +111,7 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void canCreateContactWithFirstName () {
-      app.contact().createContact(new ContactData().withFirstName("Newfirstname"));
+      app.contact().create(new ContactData().withFirstName("Newfirstname"));
     }
 
 /*    @Test

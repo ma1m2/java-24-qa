@@ -47,18 +47,18 @@ public class GroupCreationTests extends TestBase {
 
   @ParameterizedTest
   @MethodSource("singleDataGroup")
-  public void canCreateGroupJdbc(GroupData group){
+  public void canCreateGroupJdbc(GroupData group) {
     var oldGroups = app.jdbc().getGroupList();
     app.group().createGroup(group);
     var newGroups = app.jdbc().getGroupList();
     newGroups.sort(app.group().compareById());
     var expectedList = new ArrayList<>(oldGroups);
-    var maxId = newGroups.get(newGroups.size()-1).id();
+    var maxId = newGroups.get(newGroups.size() - 1).id();
     expectedList.add(group.withId(maxId));
     expectedList.sort(app.group().compareById());
     System.out.println(oldGroups.size() + " " + newGroups.size());
     Assertions.assertEquals(newGroups, expectedList);
-  //===compare UI and DB list of group===
+    //===compare UI and DB list of group===
     var newUiGroups = app.group().getList();
     newUiGroups.sort(app.group().compareById());
     var newDbGoups = app.jdbc().getListWithIdAndName();
@@ -71,21 +71,22 @@ public class GroupCreationTests extends TestBase {
   public static List<GroupData> groupProviderXml() throws IOException {
     var result = new ArrayList<GroupData>();
     var mapper = new XmlMapper();
-    var value = mapper.readValue(new File("groups.xml"), new TypeReference<List<GroupData>>(){});
+    var value = mapper.readValue(new File("groups.xml"), new TypeReference<List<GroupData>>() {
+    });
     result.addAll(value);
     return result;
   }
 
   @ParameterizedTest
   @MethodSource("groupProviderXml")
-  public void canCreateGroupsFromXmlFile(GroupData group){
+  public void canCreateGroupsFromXmlFile(GroupData group) {
     var oldGroups = app.group().getList();
     app.group().createGroup(group);
     var newGroups = app.group().getList();
     newGroups.sort(app.group().compareById());
 
     var expectedList = new ArrayList<>(oldGroups);
-    expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id())
+    expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id())
             .withHeader("")
             .withFooter(""));
     expectedList.sort(app.group().compareById());
@@ -96,7 +97,7 @@ public class GroupCreationTests extends TestBase {
   public static List<GroupData> groupProviderJson3() throws IOException {
     var result = new ArrayList<GroupData>();
     var json = "";
-    try(var reader = new FileReader(  "groups.json"); var br = new BufferedReader(reader)) {
+    try (var reader = new FileReader("groups.json"); var br = new BufferedReader(reader)) {
       var line = br.readLine();
       while (line != null) {
         json = json + line;
@@ -104,7 +105,8 @@ public class GroupCreationTests extends TestBase {
       }
     }
     ObjectMapper mapper = new ObjectMapper();
-    var value = mapper.readValue(json, new TypeReference<List<GroupData>>(){});
+    var value = mapper.readValue(json, new TypeReference<List<GroupData>>() {
+    });
     result.addAll(value);
     return result;
   }
@@ -113,7 +115,8 @@ public class GroupCreationTests extends TestBase {
     var result = new ArrayList<GroupData>();
     var json = Files.readString(Paths.get("groups.json"));
     ObjectMapper mapper = new ObjectMapper();
-    var value = mapper.readValue(json, new TypeReference<List<GroupData>>(){});
+    var value = mapper.readValue(json, new TypeReference<List<GroupData>>() {
+    });
     result.addAll(value);
     return result;
   }
@@ -121,21 +124,22 @@ public class GroupCreationTests extends TestBase {
   public static List<GroupData> groupProviderJson() throws IOException {
     var result = new ArrayList<GroupData>();
     ObjectMapper mapper = new ObjectMapper();
-    var value = mapper.readValue(new File("groups.json"), new TypeReference<List<GroupData>>(){});
+    var value = mapper.readValue(new File("groups.json"), new TypeReference<List<GroupData>>() {
+    });
     result.addAll(value);
     return result;
   }
 
   @ParameterizedTest
   @MethodSource("groupProviderJson3")
-  public void canCreateGroupsFromFile(GroupData group){
+  public void canCreateGroupsFromFile(GroupData group) {
     var oldGroups = app.group().getList();
     app.group().createGroup(group);
     var newGroups = app.group().getList();
     newGroups.sort(app.group().compareById());
 
     var expectedList = new ArrayList<>(oldGroups);
-    expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id())
+    expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id())
             .withHeader("")
             .withFooter(""));
     expectedList.sort(app.group().compareById());
@@ -154,23 +158,23 @@ public class GroupCreationTests extends TestBase {
     }
     for (int i = 0; i < 2; i++) {
       result.add(new GroupData()
-              .withName(randomString(i+5))
-              .withHeader(randomString(i+5))
-              .withFooter(randomString(i+5)));
+              .withName(randomString(i * 5))
+              .withHeader(randomString(i * 5))
+              .withFooter(randomString(i * 5)));
     }
     return result;
   }
 
   @ParameterizedTest
   @MethodSource("groupProvider")
-  public void canCreateMultipleGroupCompareList(GroupData group){
+  public void canCreateMultipleGroupCompareList(GroupData group) {
     var oldGroups = app.group().getList();
     app.group().createGroup(group);
     var newGroups = app.group().getList();
     newGroups.sort(app.group().compareById());
 
     var expectedList = new ArrayList<>(oldGroups);
-    expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id())
+    expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id())
             .withHeader("")
             .withFooter(""));
     expectedList.sort(app.group().compareById());
@@ -180,7 +184,7 @@ public class GroupCreationTests extends TestBase {
 
   @ParameterizedTest
   @MethodSource("groupProvider")
-  public void canCreateMultipleGroupWithObject(GroupData group){
+  public void canCreateMultipleGroupWithObject(GroupData group) {
     int groupCount = app.group().getCount();
     app.group().createGroup(group);
     int newGroupCount = app.group().getCount();
@@ -196,7 +200,7 @@ public class GroupCreationTests extends TestBase {
 
   @ParameterizedTest
   @MethodSource("nagatitiveGroupProvider")
-  public void canNotCreateGroupCompareList(GroupData group){
+  public void canNotCreateGroupCompareList(GroupData group) {
     var oldGroups = app.group().getList();
     app.group().createGroup(group);
     var newGroups = app.group().getList();
@@ -206,7 +210,7 @@ public class GroupCreationTests extends TestBase {
 
   @ParameterizedTest
   @MethodSource("nagatitiveGroupProvider")
-  public void canNotCreateGroup(GroupData group){
+  public void canNotCreateGroup(GroupData group) {
     int groupCount = app.group().getCount();
     app.group().createGroup(group);
     int newGroupCount = app.group().getCount();
@@ -216,8 +220,8 @@ public class GroupCreationTests extends TestBase {
 
   public static List<String> groupNameProvider() {
     var result = new ArrayList<String>(List.of("group", "name", "group name"));
-    for(int i = 0; i < 4; i++) {
-      result.add(randomString(i*10));
+    for (int i = 0; i < 4; i++) {
+      result.add(randomString(i * 10));
     }
     return result;
   }
