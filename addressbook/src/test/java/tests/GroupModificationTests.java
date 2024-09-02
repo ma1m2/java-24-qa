@@ -10,6 +10,23 @@ import java.util.Random;
 
 public class GroupModificationTests extends TestBase {
 
+  //video 6.3
+  @Test
+  public void canModifyGroupHbm() {
+    app.hbm().verifyOrCreateAvailableGroupHbm();
+    var oldGroups = app.hbm().getGroupList();
+    var rmd = new Random();
+    int index = rmd.nextInt(oldGroups.size());
+    GroupData testData = new GroupData().withName("modified group");
+    app.group().modifyGroup(oldGroups.get(index), testData);
+    var newGroups = app.hbm().getGroupList();
+    var expectedList = new ArrayList<>(oldGroups);
+    expectedList.set(index, testData.withId(oldGroups.get(index).id()));
+    newGroups.sort(app.group().compareById());
+    expectedList.sort(app.group().compareById());
+    Assertions.assertEquals(newGroups, expectedList);
+  }
+  //=======================================================
   @Test
   public void canModifyGroup() {
     app.group().verifyOrCreateAvailableGroup();

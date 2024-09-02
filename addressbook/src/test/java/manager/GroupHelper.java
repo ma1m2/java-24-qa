@@ -105,6 +105,12 @@ public class GroupHelper extends HelperBase{
     click(By.cssSelector(String.format("input[value='%s'" , group.id())));
   }
 
+  public void verifyOrCreateAvailableGroup() {
+    if(getCount() == 0) {
+      createGroup(new GroupData("", "group name", "group header", "group footer"));
+    }
+  }
+
   private void selectGroup() {
     click(By.name("selected[]"));
   }
@@ -118,12 +124,6 @@ public class GroupHelper extends HelperBase{
     var checkboxes = app.driver.findElements(By.name("selected[]"));
     for(var checkbox : checkboxes) {
       checkbox.click();
-    }
-  }
-
-  public void verifyOrCreateAvailableGroup() {
-    if(app.group().getCount() == 0) {
-      app.group().createGroup(new GroupData("", "group name", "group header", "group footer"));
     }
   }
 

@@ -35,9 +35,39 @@ public class HbmHelper extends HelperBase{
     return new GroupData("" + record.id, record.name, record.header, record.footer);
   }
 
+  private static GroupRecord convert(GroupData data) {
+    var id = data.id();
+    if ("".equals(id)){
+      id = "0";
+    }
+    return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
+  }
+
   public List<GroupData> getGroupList() {
     return convertListFromRecords(sessionFactory.fromSession(session -> {
       return session.createQuery("from GroupRecord", GroupRecord.class).list();
     }));
   }
+
+  public void verifyOrCreateAvailableGroupHbm() {
+    if(getGroupCount() == 0) {
+      createGroup(new GroupData("", "group name", "group header", "group footer"));
+    }
+  }
+
+  public void createGroup(GroupData groupData) {
+    sessionFactory.inSession(session -> {
+      session.getTransaction().begin();
+      session.persist(convert(groupData));
+      session.getTransaction().commit();
+    });
+
+  }
+
+  public long getGroupCount() {
+    return sessionFactory.fromSession(session -> {
+      return session.createQuery("select count(*) from GroupRecord", Long.class).getSingleResult();
+    });
+  }
+
 }

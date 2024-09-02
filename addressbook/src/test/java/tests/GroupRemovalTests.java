@@ -9,7 +9,28 @@ import java.util.List;
 import java.util.Random;
 
 public class GroupRemovalTests extends TestBase {
+  //video 6.3
+  @Test
+  public void canRemoveGroupHbm() {
+    app.hbm().verifyOrCreateAvailableGroupHbm();
+    List<GroupData> oldGroups = app.hbm().getGroupList();
+    var rmd = new Random();
+    int index = rmd.nextInt(oldGroups.size());
+    app.group().removeGroup(oldGroups.get(index));
+    List<GroupData> newGroups = app.hbm().getGroupList();
+    var expectedGroup = new ArrayList<>(oldGroups);
+    expectedGroup.remove(index);
+    System.out.println(oldGroups.size() + " " + newGroups.size());
+    Assertions.assertEquals(newGroups, expectedGroup);
+  }
 
+  @Test
+  public void canRemoveAllGroupsAtOnceHbm() {
+    app.hbm().verifyOrCreateAvailableGroupHbm();
+    app.group().removeAllGroup();
+    Assertions.assertEquals(0, app.hbm().getGroupCount());
+  }
+  //=======================================================
   @Test
   public void canRemoveGroup() {
     app.group().verifyOrCreateAvailableGroup();
