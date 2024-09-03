@@ -18,7 +18,7 @@ public class HbmHelper extends HelperBase {
     super(app);
     sessionFactory = new Configuration()
             .addAnnotatedClass(GroupRecord.class)
-            .addAnnotatedClass(ContactHelper.class)
+            .addAnnotatedClass(ContactRecord.class)
 /*            .setProperty(AvailableSettings.URL,
                     "jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=convertToNull")
             .setProperty(AvailableSettings.USER, "root")

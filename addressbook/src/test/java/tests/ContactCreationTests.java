@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
-  //video 6.4
+  //===video 6.4===
   @Test
   public void canCreateContactInGroup() {
     var contact = new ContactData()
@@ -25,12 +25,18 @@ public class ContactCreationTests extends TestBase {
             .withAddress(Util.randomString(10));
     app.hbm().verifyOrCreateAvailableGroupHbm();
     var group = app.hbm().getGroupList().get(0);
-
     var oldRelated = app.hbm().getContactsInGroup(group);
+
     app.contact().create(contact, group);
     var newRelated = app.hbm().getContactsInGroup(group);
     System.out.println(oldRelated.size() + " " + newRelated.size());
     Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+    //=====compare lists of contacts in group=============
+    newRelated.sort(app.contact().compareById());
+    var expectedList = new ArrayList<>(oldRelated);
+    expectedList.add(newRelated.get(newRelated.size() - 1));
+    expectedList.sort(app.contact().compareById());
+    Assertions.assertEquals(expectedList, newRelated);
   }
   //============================================
   public static List<ContactData> contactProviderFromJson() throws IOException {
