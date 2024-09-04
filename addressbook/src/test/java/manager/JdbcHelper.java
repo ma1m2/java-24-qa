@@ -51,4 +51,18 @@ public class JdbcHelper extends HelperBase{
   }
 
 
+  public void checkConsistancyDB() {
+    try(var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook", "root", "");
+        var st = conn.createStatement();
+        var rs = st.executeQuery("SELECT * FROM `address_in_groups` ag LEFT JOIN `addressbook` ab ON ag.id = ab.id WHERE ab.id IS NULL"))
+    {
+      if(rs.next()) {
+        System.out.println(rs.getString("ag.id") + " "
+                + rs.getString("ag.group_id") + " " + rs.getString("ab.id"));
+        throw new IllegalStateException("Inconsistency in DB, it's corrupted");
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }
