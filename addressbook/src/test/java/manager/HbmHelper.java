@@ -62,7 +62,13 @@ public class HbmHelper extends HelperBase {
     return new ContactData().withId("" + record.id)
             .withFirstName(record.firstname)
             .withLastName(record.lastname)
-            .withAddress(record.address);
+            .withAddress(record.address)
+            .withHome(record.home)
+            .withMobile(record.mobile)
+            .withWork(record.work)
+            .withEmail(record.email)
+            .withEmail2(record.email2)
+            .withEmail3(record.email3);
   }
 
   private static ContactRecord convert(ContactData data) {
@@ -70,7 +76,8 @@ public class HbmHelper extends HelperBase {
     if ("".equals(id)) {
       id = "0";
     }
-    return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.address());
+    return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.address(),
+            data.home(), data.mobile(), data.work(), data.email(), data.email2(), data.email3());
   }
 
   public List<GroupData> getGroupList() {
@@ -106,4 +113,29 @@ public class HbmHelper extends HelperBase {
     });
   }
 
+  public List<ContactData> getContactList() {
+    return convertContactListFromRecords(sessionFactory.fromSession(session -> {
+      return session.createQuery("from ContactRecord", ContactRecord.class).list();
+    }));
+  }
+
+  public void verifyOrCreateAvailableContact() {
+    if (getContactCount() == 0) {
+      createContact(new ContactData().withFirstName("first name").withLastName("last name"));
+    }
+  }
+
+  private void createContact(ContactData contactData) {
+    sessionFactory.inSession(session -> {
+      session.getTransaction().begin();
+      session.persist(convert(contactData));
+      session.getTransaction().commit();
+    });
+  }
+
+  private long getContactCount() {
+    return sessionFactory.fromSession(session -> {
+      return session.createQuery("select count(*) from ContactRecord", Long.class).getSingleResult();
+    });
+  }
 }

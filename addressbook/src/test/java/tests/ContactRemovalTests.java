@@ -7,6 +7,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ContactRemovalTests extends TestBase {
+  //HW-14
+  @Test
+  public void canRemoveContactHbm() {
+    app.hbm().verifyOrCreateAvailableContact();
+    var oldContacts = app.hbm().getContactList();
+    var rnd = new Random();
+    int index = rnd.nextInt(oldContacts.size());
+    app.contact().removeContactById(oldContacts.get(index));
+    var newContacts = app.hbm().getContactList();
+    var expectedList = new ArrayList<>(oldContacts);
+    expectedList.remove(index);
+    Assertions.assertEquals(newContacts, expectedList);
+  }
 
   @Test
   public void canRemoveContact() {

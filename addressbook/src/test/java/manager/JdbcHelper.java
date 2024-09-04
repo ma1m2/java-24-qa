@@ -50,7 +50,6 @@ public class JdbcHelper extends HelperBase{
     return groups;
   }
 
-
   public void checkConsistancyDB() {
     try(var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook", "root", "");
         var st = conn.createStatement();

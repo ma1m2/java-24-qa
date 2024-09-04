@@ -8,14 +8,43 @@ import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ContactCreationTests extends TestBase {
+  //HW-14
+  public static List<ContactData> singleDataContact() {
+    return List.of(new ContactData().withFirstName(Util.randomString(7))
+            .withLastName(Util.randomString(7))
+            .withAddress(Util.randomString(7) + ", " + Util.randomNumber(2) +
+                    ", " + Util.randomString(7) + ", " + Util.randomNumber(3))
+            .withEmail(Util.randomString(7) + "@mail.ru")
+            .withEmail2(Util.randomString(7) + "@gmail.com")
+            .withEmail3(Util.randomString(7) + "@mail.ru")
+            .withHome(Util.randomNumber(10))
+            .withWork(Util.randomNumber(10))
+            .withMobile(Util.randomNumber(10)));
+  }
+
+  @ParameterizedTest
+  @MethodSource("singleDataContact")
+  public void canCreateContactHbm(ContactData contact) {
+    var oldContacts = app.hbm().getContactList();
+    app.contact().create(contact);
+    var newContacts = app.hbm().getContactList();
+    newContacts.sort(app.contact().compareById());
+    var expectedList = new ArrayList<>(oldContacts);
+    expectedList.add(newContacts.get(newContacts.size() - 1));
+    expectedList.sort(app.contact().compareById());
+    Assertions.assertEquals(expectedList, newContacts);
+  }
+  
   //===video 6.4===
   @Test
   public void canCreateContactInGroup() {
@@ -94,12 +123,16 @@ public class ContactCreationTests extends TestBase {
 
   public static List<ContactData> contactProvider() {
     var result = new ArrayList<ContactData>();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 2; i++) {
       result.add(new ContactData().withFirstName(Util.randomString(i + 5))
               .withLastName(Util.randomString(i + 5))
               .withAddress(Util.randomString(i + 5) + ", " + Util.randomNumber(2) +
                       ", " + Util.randomString(i + 5) + ", " + Util.randomNumber(3))
               .withEmail(Util.randomString(i + 5) + "@mail.ru")
+              .withEmail2(Util.randomString(i + 5) + "@gmail.com")
+              .withEmail3(Util.randomString(i + 5) + "@mail.ru")
+              .withHome(Util.randomNumber(10))
+              .withWork(Util.randomNumber(10))
               .withMobile(Util.randomNumber(10)));
     }
     return result;
@@ -119,12 +152,5 @@ public class ContactCreationTests extends TestBase {
     public void canCreateContactWithFirstName () {
       app.contact().create(new ContactData().withFirstName("Newfirstname"));
     }
-
-/*    @Test
-    public void canCreateContactWithFieldsFromHomePage () {
-      app.contact().createContact(new ContactData().withFirstName("Newfirstname")
-              .withLastName("newLastName").withAddress("newAddress")
-              .withEmail("newEmail").withMobile("123456789"));
-    }*/
 
   }
