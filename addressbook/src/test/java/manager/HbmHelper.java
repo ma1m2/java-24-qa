@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HbmHelper extends HelperBase {
   private SessionFactory sessionFactory;
@@ -30,7 +31,12 @@ public class HbmHelper extends HelperBase {
             .buildSessionFactory();
   }
 
-  public static List<GroupData> convertGroupListFromRecords(List<GroupRecord> records) {
+  //video 7.3
+  public static List<GroupData> convertGroupList(List<GroupRecord> records) {
+    return records.stream().map(HbmHelper::convert).collect(Collectors.toList());
+  }
+
+  public static List<GroupData> convertGroupListOld(List<GroupRecord> records) {
     List<GroupData> groups = new ArrayList<>();
     for (GroupRecord record : records) {
       groups.add(convert(record));
@@ -50,7 +56,12 @@ public class HbmHelper extends HelperBase {
     return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
   }
 
-  public static List<ContactData> convertContactListFromRecords(List<ContactRecord> records) {
+  //video 7.3
+  public static List<ContactData> convertContactList(List<ContactRecord> records) {
+    return records.stream().map(HbmHelper::convert).collect(Collectors.toList());
+  }
+
+  public static List<ContactData> convertContactListOld(List<ContactRecord> records) {
     List<ContactData> contacts = new ArrayList<>();
     for (ContactRecord record : records) {
       contacts.add(convert(record));
@@ -81,7 +92,7 @@ public class HbmHelper extends HelperBase {
   }
 
   public List<GroupData> getGroupList() {
-    return convertGroupListFromRecords(sessionFactory.fromSession(session -> {
+    return convertGroupList(sessionFactory.fromSession(session -> {
       return session.createQuery("from GroupRecord", GroupRecord.class).list();
     }));
   }
@@ -109,12 +120,12 @@ public class HbmHelper extends HelperBase {
 
   public List<ContactData> getContactsInGroup(GroupData group) {
     return sessionFactory.fromSession(session -> {
-      return convertContactListFromRecords(session.get(GroupRecord.class, group.id()).contacts);
+      return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
     });
   }
 
   public List<ContactData> getContactList() {
-    return convertContactListFromRecords(sessionFactory.fromSession(session -> {
+    return convertContactList(sessionFactory.fromSession(session -> {
       return session.createQuery("from ContactRecord", ContactRecord.class).list();
     }));
   }

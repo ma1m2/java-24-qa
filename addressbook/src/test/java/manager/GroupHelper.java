@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GroupHelper extends HelperBase{
 
@@ -141,7 +142,20 @@ public class GroupHelper extends HelperBase{
     }
   }
 
+  //video 7.3 10:30
   public List<GroupData> getList() {
+    openGroupPage();
+    var spans = app.driver.findElements(By.cssSelector("span.group"));
+    return spans.stream()
+            .map(span -> {
+              var name = span.getText();
+              var id = span.findElement(By.tagName("input")).getAttribute("value");
+              return new GroupData().withId(id).withName(name);
+            })
+            .collect(Collectors.toList());
+  }
+
+  public List<GroupData> getListOld() {
     openGroupPage();
     var groups = new ArrayList<GroupData>();
     var spans = app.driver.findElements(By.cssSelector("span.group"));

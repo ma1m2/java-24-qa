@@ -88,6 +88,7 @@ public class Generator {
     }
   }
 
+  //video 7.2
   private Object generateData(Supplier<Object> dataSupplier) {
     return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList());
   }
