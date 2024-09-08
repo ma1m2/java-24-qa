@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Util {
-  //video 7.3
+  //video 7.3 5:00
   public static String randomString(int length) {
     var rnd = new Random();
     Supplier<Integer> rndNumbers = () -> rnd.nextInt(26);
