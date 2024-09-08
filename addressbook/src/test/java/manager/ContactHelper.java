@@ -99,13 +99,14 @@ public class ContactHelper extends HelperBase {
     openHomePage();
     return app.isElementPresent(By.name("selected[]"));
   }
+
   private void openHomePage() {
     if (!app.isElementPresent(By.id("search_count"))) {
       click(By.linkText("home"));
     }
   }
 
-  public String takeNumberOfContact(){
+  public String takeNumberOfContact() {
     openHomePage();
     return app.driver.findElement(By.id("search_count")).getText();
   }
@@ -129,7 +130,7 @@ public class ContactHelper extends HelperBase {
     type(By.name("email"), contact.email());
     type(By.name("email2"), contact.email2());
     type(By.name("email3"), contact.email3());
-    if(!contact.photo().equals("")) {
+    if (!contact.photo().equals("")) {
       attachFile(By.name("photo"), contact.photo());
     }
   }
@@ -139,7 +140,7 @@ public class ContactHelper extends HelperBase {
   }
 
   public void verifyOrCreateAvailableContact() {
-    if(!app.contact().isContactPresent()) {
+    if (!app.contact().isContactPresent()) {
       app.contact().create(new ContactData().withFirstName("firstname")
               .withLastName("LastName").withAddress("Address")
               .withEmail("Email").withMobile("12345"));
@@ -168,5 +169,10 @@ public class ContactHelper extends HelperBase {
     return (o1, o2) -> {
       return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
     };
+  }
+
+  public String getPhones(ContactData contact) {
+    return app.driver.findElement(By.xpath(
+            String.format("//input[@id='%s']/../../td[6]", contact.id()))).getText();
   }
 }

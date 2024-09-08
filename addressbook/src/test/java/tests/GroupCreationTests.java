@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -26,10 +27,27 @@ public class GroupCreationTests extends TestBase {
   //video 7.2
   public static Stream<GroupData> dataGroupFp() {
     Supplier<GroupData> rndGroup = () -> new GroupData()
-            .withName(randomString(10))
-            .withHeader(randomString(20))
-            .withFooter(randomString(30));
+            .withName(randomString(9))
+            .withHeader(randomString(11))
+            .withFooter(randomString(15));
     return Stream.generate(rndGroup).limit(2);
+  }
+
+  //video 7.4
+  @ParameterizedTest
+  @MethodSource("dataGroupFp")
+  public void canCreateGroupSet(GroupData group) {
+    var oldGroups = app.hbm().getGroupList();
+    app.group().createGroup(group);
+    var newGroups = app.hbm().getGroupList();
+
+    var extraGroups = newGroups.stream().filter(g -> ! oldGroups.contains(g)).toList();
+    var newId = extraGroups.get(0).id();
+    var expectedList = new ArrayList<>(oldGroups);
+    expectedList.add(group.withId(newId));
+
+    System.out.println(oldGroups.size() + " " + newGroups.size());
+    Assertions.assertEquals(Set.copyOf(newGroups), Set.copyOf(expectedList));
   }
 
   //video 6.2

@@ -74,9 +74,11 @@ public class HbmHelper extends HelperBase {
             .withFirstName(record.firstname)
             .withLastName(record.lastname)
             .withAddress(record.address)
+            .withAddress2(record.address2)
             .withHome(record.home)
             .withMobile(record.mobile)
             .withWork(record.work)
+            .withPhone2(record.phone2)
             .withEmail(record.email)
             .withEmail2(record.email2)
             .withEmail3(record.email3);
@@ -87,8 +89,10 @@ public class HbmHelper extends HelperBase {
     if ("".equals(id)) {
       id = "0";
     }
-    return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.address(),
-            data.home(), data.mobile(), data.work(), data.email(), data.email2(), data.email3());
+    return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(),
+            data.address(), data.address2(),
+            data.home(), data.mobile(), data.work(), data.phone2(),
+            data.email(), data.email2(), data.email3());
   }
 
   public List<GroupData> getGroupList() {
