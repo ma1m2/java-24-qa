@@ -17,13 +17,24 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static common.Util.randomString;
 
 public class GroupCreationTests extends TestBase {
+  //video 7.2
+  public static Stream<GroupData> dataGroupFp() {
+    Supplier<GroupData> rndGroup = () -> new GroupData()
+            .withName(randomString(10))
+            .withHeader(randomString(20))
+            .withFooter(randomString(30));
+    return Stream.generate(rndGroup).limit(2);
+  }
+
   //video 6.2
   @ParameterizedTest
-  @MethodSource("singleDataGroup")
+  @MethodSource("dataGroupFp")
   public void canCreateGroupHbm(GroupData group) {
     var oldGroups = app.hbm().getGroupList();
     app.group().createGroup(group);

@@ -3,7 +3,7 @@ package ru.msl.geometry.figures;
 public record Square(double side) {
 
   public Square(double side) {
-    if(side < 0) {
+    if (side < 0) {
       throw new IllegalArgumentException("Square side should be non-negative");
     }
     this.side = side;
@@ -11,6 +11,11 @@ public record Square(double side) {
 
   public static void printSquareArea(Square s) {
     String text = String.format("Area of square with a side %f = %f", s.side, s.area());
+    System.out.println(text);
+  }
+
+  public static void perimeterSquare(Square s) {
+    String text = String.format("Perimeter of square with a side %f = %f", s.side, s.side * 4);
     System.out.println(text);
   }
 

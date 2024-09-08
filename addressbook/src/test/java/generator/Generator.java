@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static common.Util.randomFile;
 import static common.Util.randomString;
@@ -85,7 +88,25 @@ public class Generator {
     }
   }
 
+  private Object generateData(Supplier<Object> dataSupplier) {
+    return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList());
+  }
+
   private Object generateGroups() {
+    return generateData(() -> new GroupData()
+            .withName(randomString(8))
+            .withHeader(randomString(8))
+            .withFooter(randomString(8)));
+  }
+
+  private Object generateContacts() {
+    return generateData(() -> new ContactData()
+            .withFirstName(randomString(8))
+            .withLastName(randomString(8))
+            .withPhoto(randomFile("src/test/resources/images")));
+  }
+
+  private Object generateGroupsOld() {
     var result = new ArrayList<GroupData>();
     for (int i = 0; i < count; i++) {
       result.add(new GroupData()
@@ -96,7 +117,7 @@ public class Generator {
     return result;
   }
 
-  private Object generateContacts() {
+  private Object generateContactsOld() {
     var result = new ArrayList<ContactData>();
     for (int i = 0; i < count; i++) {
       result.add(new ContactData()
