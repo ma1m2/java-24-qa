@@ -4,11 +4,33 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class CollectionTests {
+  //video 7.6
+  @Test
+  void mapTest() {
+    var digits = new HashMap<Character, String>();
+    digits.put('0', "zero");
+    digits.put('1', "one");
+    digits.put('2', "two");
+    digits.put('3', "three");
+    digits.put('4', "four");
+    digits.put('5', "five");
+    digits.put('6', "six");
+    digits.put('7', "seven");
+    digits.put('8', "eight");
+    digits.put('9', "nine");
+    Assertions.assertEquals("nine", digits.get('9'));
+    digits.put('9', "nove");
+    System.out.println(digits);
+    Assertions.assertEquals(10, digits.size());
+    Assertions.assertEquals("nove", digits.get('9'));
+  }
+
   //video 7.4
   @Test
   void setTest() {
