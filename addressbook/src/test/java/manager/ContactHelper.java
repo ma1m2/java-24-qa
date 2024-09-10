@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ContactHelper extends HelperBase {
 
@@ -188,5 +189,72 @@ public class ContactHelper extends HelperBase {
       result.put(id, phones);
     }
     return result;
+  }
+
+  public Map<String,String> getAddresses() {
+    var result = new HashMap<String,String>();
+    List<WebElement> rows = app.driver.findElements(By.name("entry"));
+    for (WebElement row : rows) {
+      var id = row.findElement(By.tagName("input")).getAttribute("id");
+      var address = row.findElements(By.tagName("td")).get(3).getText();
+      result.put(id, address);
+    }
+    return result;
+  }
+
+  public Map<String,String> getEmails() {
+    var result = new HashMap<String,String>();
+    List<WebElement> rows = app.driver.findElements(By.name("entry"));
+    for (WebElement row : rows) {
+      var id = row.findElement(By.tagName("input")).getAttribute("id");
+      var emails = row.findElements(By.tagName("td")).get(4).getText();
+      result.put(id, emails);
+    }
+    return result;
+  }
+
+  public StringBuffer getInfoFromHomePage(ContactData contact) {
+    openHomePage();
+    StringBuffer sb = new StringBuffer();
+    List<WebElement> tds = selectRowById(contact).findElements(By.tagName("td"));
+    for (WebElement td : tds) {
+      if(td.getText() != null && ! td.getText().equals(""))
+      sb.append(td.getText()).append("\n");
+    }
+    return sb;
+  }
+
+  public WebElement selectRowById(ContactData contact) {
+    var xpath = String.format("//tr[@name='entry']//input[@id='%s']/../..", contact.id());
+    WebElement row = app.driver.findElement(By.xpath(xpath));
+    return row;
+  }
+
+  public StringBuffer getInfoFromEditPage(ContactData contact) {
+    openEditContactPage(contact);
+    StringBuffer sb = new StringBuffer();
+    var lastname = app.driver.findElement(By.name("lastname")).getAttribute("value");
+    var firstname = app.driver.findElement(By.name("firstname")).getAttribute("value");
+    var address = app.driver.findElement(By.name("address")).getAttribute("value");
+    var email = app.driver.findElement(By.name("email")).getAttribute("value");
+    var email2 = app.driver.findElement(By.name("email2")).getAttribute("value");
+    var email3 = app.driver.findElement(By.name("email3")).getAttribute("value");
+    var home = app.driver.findElement(By.name("home")).getAttribute("value");
+    var mobile = app.driver.findElement(By.name("mobile")).getAttribute("value");
+    var work = app.driver.findElement(By.name("work")).getAttribute("value");
+    if(lastname != null && ! lastname.equals("")) sb.append(lastname).append("\n");
+    if(firstname != null && ! firstname.equals("")) sb.append(firstname).append("\n");
+    if(address != null && ! address.equals("")) sb.append(address).append("\n");
+    if(email != null && ! email.equals("")) sb.append(email).append("\n");
+    if(email2 != null && ! email2.equals("")) sb.append(email2).append("\n");
+    if(email3 != null && ! email3.equals("")) sb.append(email3).append("\n");
+    if(home != null && ! home.equals("")) sb.append(home).append("\n");
+    if(mobile != null && ! mobile.equals("")) sb.append(mobile).append("\n");
+    if(work != null && ! work.equals("")) sb.append(work).append("\n");
+    return sb;
+  }
+
+  private void openEditContactPage(ContactData contact) {
+    selectRowById(contact).findElements(By.tagName("td")).get(7).findElement(By.tagName("a")).click();
   }
 }
