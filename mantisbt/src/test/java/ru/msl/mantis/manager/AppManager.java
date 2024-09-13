@@ -1,0 +1,44 @@
+package ru.msl.mantis.manager;
+
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import java.security.AuthProvider;
+import java.util.Properties;
+
+public class AppManager {
+  private WebDriver driver;
+  private String browser;
+  private Properties prop;
+  private SessionHelper session;
+
+  public void init(String browser, Properties prop) {
+    this.prop = prop;
+    this.browser = browser;
+  }
+
+  public WebDriver driver() {
+    if(driver == null) {
+      if("chrome".equals(browser)) {
+        driver = new ChromeDriver();
+      } else if ("firefox".equals(browser)) {
+        driver = new FirefoxDriver();
+      }else {
+        throw new IllegalArgumentException(String.format("Unrecognized browser: %s", browser));
+      }
+      Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
+      driver.get(prop.getProperty("web.baseUrl"));
+      driver.manage().window().setSize(new Dimension(1264, 964));
+    }
+    return driver;
+  }
+
+  public SessionHelper session() {
+    if(session == null) {
+      session = new SessionHelper(this);
+    }
+    return new SessionHelper(this);
+  }
+}
