@@ -4,6 +4,8 @@ import org.openqa.selenium.io.CircularOutputStream;
 import org.openqa.selenium.os.CommandLine;
 
 public class JamesCliHelper extends HelperBase {
+  //C:\tools\james-server-jpa-guice>java -Dworking.directory=. -jar james-server-jpa-app.jar
+  //C:\tools\james-server-jpa-guice>java -cp "james-server-jpa-app.lib/*" org.apache.james.cli.ServerCmd ListUsers
 
   public JamesCliHelper(AppManager app) {
     super(app);

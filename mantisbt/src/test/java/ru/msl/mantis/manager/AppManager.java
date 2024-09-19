@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.security.AuthProvider;
 import java.util.Properties;
 
 public class AppManager {
@@ -16,6 +15,7 @@ public class AppManager {
   private HttpSessionHelper http;
   private JamesCliHelper james;
   private MailHelper mail;
+  private RegisterHelper register;
 
   public void init(String browser, Properties prop) {
     this.prop = prop;
@@ -68,5 +68,12 @@ public class AppManager {
       mail = new MailHelper(this);
     }
     return mail;
+  }
+
+  public RegisterHelper register() {
+    if(register == null) {
+      register = new RegisterHelper(this);
+    }
+    return register;
   }
 }
