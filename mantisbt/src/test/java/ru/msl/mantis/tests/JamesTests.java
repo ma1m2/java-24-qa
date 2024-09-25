@@ -9,4 +9,10 @@ public class JamesTests extends TestBase {
   public void canCreateUser() {
     app.james().addUser(String.format("%s@localhost", Util.randomString(5)), "password");
   }
+
+  @Test
+  public void canRemoveUser() {
+    app.james().removeUser("user1@localhost");
+  }
+
 }

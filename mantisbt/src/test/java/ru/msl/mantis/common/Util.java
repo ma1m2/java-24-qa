@@ -1,9 +1,13 @@
 package ru.msl.mantis.common;
 
+import ru.msl.mantis.model.MailMessage;
+
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,4 +56,17 @@ public class Util {
     }
     return sb.toString();
   }
+
+  public static String canExtractUrl(List<MailMessage> messages) {
+    var test = messages.get(0).content();
+    var pattern = Pattern.compile("http://\\S+");
+    var matcher = pattern.matcher(test);
+    if(matcher.find()) {
+      var url = test.substring(matcher.start(), matcher.end());
+      System.out.println(url);
+      return url;
+    }
+    return "Url not found";
+  }
+
 }
