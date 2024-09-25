@@ -16,6 +16,26 @@ public class UserHelper extends HelperBase{
     proceedRegistration();
   }
 
+  public void editAccount(String url, String username, String password) throws InterruptedException {
+    clickConfirmLink(url);
+    fillEditAccountForm(username, password);
+    submitUpdate();
+  }
+
+  private void submitUpdate() {
+    click(By.cssSelector("span.bigger-110"));
+  }
+
+  private void fillEditAccountForm(String username, String password) {
+    type(By.name("realname"), username);
+    type(By.name("password"), password);
+    type(By.name("password_confirm"), password);
+  }
+
+  private void clickConfirmLink(String url) {
+    app.driver().get(url);
+  }
+
   private void proceedRegistration() throws InterruptedException {
     Thread.sleep(1000);
     click(By.linkText("Proceed"));
