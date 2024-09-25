@@ -28,6 +28,22 @@ public class UserRegistrationTests extends TestBase {
     Assertions.assertTrue(app.http().isLoggedIn());
   }
 
+  //Hw-18 when I remove user from James server, INBOX is saved in DB
+  @Test
+  public void haveMantisBugWithConfirmationLink() throws InterruptedException {
+    var username = "user1";
+    var email = String.format("%s@localhost", username);
+    //creat user(email) on mail server (JamesCliHelper)
+    app.james().addUser(email, "password");
+    //open browser and fill sing up form and submit (browser)
+    app.user().signUp(username, email);
+    //wait for email (MailHelper)
+    var messages = app.mail().receive(email, "password", Duration.ofSeconds(10));
+    System.out.println("How many messages in INBOX: " + messages.size());
+    System.out.println(messages);
+
+  }
+
   @Test
   public void canCheckListUsers() {
     var email = app.james().listUsers();

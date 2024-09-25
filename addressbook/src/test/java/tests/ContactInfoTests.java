@@ -22,7 +22,6 @@ public class ContactInfoTests extends TestBase {
     Assertions.assertEquals(contactHome.toString(), contactEdit.toString());
   }
 
-  //Hw - 16
   @Test
   public void testEmailsCompareMaps() {
     app.hbm().verifyOrCreateAvailableContact();
@@ -37,7 +36,6 @@ public class ContactInfoTests extends TestBase {
     Assertions.assertEquals(expected, emails);
   }
 
-  //Hw - 16
   @Test
   public void testAddressesCompareMaps() {
     app.hbm().verifyOrCreateAvailableContact();

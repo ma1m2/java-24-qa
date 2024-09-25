@@ -11,7 +11,8 @@ public class JamesTests extends TestBase {
   }
 
   @Test
-  public void canRemoveUser() {
+  public void canRemoveUserAndDrainInbox() {
+    app.mail().drain("user1@localhost", "password");
     app.james().removeUser("user1@localhost");
   }
 
