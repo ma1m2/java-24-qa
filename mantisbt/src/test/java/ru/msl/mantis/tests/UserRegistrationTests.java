@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.msl.mantis.common.Util;
+import ru.msl.mantis.model.DevMailUser;
 
 import java.time.Duration;
 import java.util.stream.Stream;
@@ -16,6 +17,7 @@ public class UserRegistrationTests extends TestBase {
   public static Stream<String> randomUser() {
     return Stream.of(Util.randomString(8));
   }
+
   @ParameterizedTest
   @MethodSource("randomUser")
   public void canRegisterUserApi(String username) throws InterruptedException {

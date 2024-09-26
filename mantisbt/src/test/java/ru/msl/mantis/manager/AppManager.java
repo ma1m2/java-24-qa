@@ -17,6 +17,7 @@ public class AppManager {
   private JamesApiHelper jamesApi;
   private MailHelper mail;
   private UserHelper user;
+  private DevMailHelper devMail;
 
   public void init(String browser, Properties prop) {
     this.prop = prop;
@@ -82,5 +83,12 @@ public class AppManager {
       user = new UserHelper(this);
     }
     return user;
+  }
+
+  public DevMailHelper devMail() {
+    if(devMail == null) {
+      devMail = new DevMailHelper(this);
+    }
+    return devMail;
   }
 }
