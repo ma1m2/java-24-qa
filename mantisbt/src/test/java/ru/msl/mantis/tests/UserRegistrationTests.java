@@ -12,12 +12,10 @@ import java.util.stream.Stream;
 
 public class UserRegistrationTests extends TestBase {
 
+  //video 9.2
   public static Stream<String> randomUser() {
-    return Stream.of(
-      Util.randomString(8)
-    );
+    return Stream.of(Util.randomString(8));
   }
-
   @ParameterizedTest
   @MethodSource("randomUser")
   public void canRegisterUserApi(String username) throws InterruptedException {
@@ -26,8 +24,7 @@ public class UserRegistrationTests extends TestBase {
     //creat user(email) on mail server (JamesApiHelper)
     app.jamesApi().addUser(email, password);
     System.out.println(app.jamesApi().listUsers());
-    app.jamesApi().removeUser(email);
-/*    //open browser and fill sing up form and submit (browser)
+    //open browser and fill sing up form and submit (browser)
     app.user().signUp(username, email);
     //wait for email (MailHelper)
     var messages = app.mail().receive(email, "password", Duration.ofSeconds(10));
@@ -37,7 +34,7 @@ public class UserRegistrationTests extends TestBase {
     app.user().editAccount(url, username, "password");
     //check that user is logged in (HttpSessionHelper)
     app.http().login(username, "password");
-    Assertions.assertTrue(app.http().isLoggedIn());*/
+    Assertions.assertTrue(app.http().isLoggedIn());
   }
 
   //Hw-18
@@ -61,7 +58,7 @@ public class UserRegistrationTests extends TestBase {
     Assertions.assertTrue(app.http().isLoggedIn());
   }
 
-  //Hw-18 when I remove user from James server, INBOX is saved in DB
+  //when I remove user from James server, INBOX is saved in DB
   @Test
   public void haveMantisBugWithConfirmationLink() throws InterruptedException {
     var username = "user1";
