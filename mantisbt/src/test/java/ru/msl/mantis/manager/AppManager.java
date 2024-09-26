@@ -13,7 +13,8 @@ public class AppManager {
   private Properties prop;
   private SessionHelper session;
   private HttpSessionHelper http;
-  private JamesCliHelper james;
+  private JamesCliHelper jamesCli;
+  private JamesApiHelper jamesApi;
   private MailHelper mail;
   private UserHelper user;
 
@@ -56,13 +57,19 @@ public class AppManager {
     return prop.getProperty(key);
   }
 
-  public JamesCliHelper james() {
-    if(james == null) {
-      james = new JamesCliHelper(this);
+  public JamesCliHelper jamesCli() {
+    if(jamesCli == null) {
+      jamesCli = new JamesCliHelper(this);
     }
-    return james;
+    return jamesCli;
   }
 
+  public JamesApiHelper jamesApi() {
+    if(jamesApi == null) {
+      jamesApi = new JamesApiHelper(this);
+    }
+    return jamesApi;
+  }
   public MailHelper mail() {
     if(mail == null) {
       mail = new MailHelper(this);

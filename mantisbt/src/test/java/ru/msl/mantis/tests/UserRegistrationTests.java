@@ -2,11 +2,44 @@ package ru.msl.mantis.tests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import ru.msl.mantis.common.Util;
 
 import java.time.Duration;
+import java.util.stream.Stream;
 
 public class UserRegistrationTests extends TestBase {
+
+  public static Stream<String> randomUser() {
+    return Stream.of(
+      Util.randomString(8)
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("randomUser")
+  public void canRegisterUserApi(String username) throws InterruptedException {
+    var password = "password";
+    var email = String.format("%s@localhost", username);
+    //creat user(email) on mail server (JamesApiHelper)
+    app.jamesApi().addUser(email, password);
+    System.out.println(app.jamesApi().listUsers());
+    app.jamesApi().removeUser(email);
+/*    //open browser and fill sing up form and submit (browser)
+    app.user().signUp(username, email);
+    //wait for email (MailHelper)
+    var messages = app.mail().receive(email, "password", Duration.ofSeconds(10));
+    //extract confirmation link
+    var url = Util.canExtractUrl(messages);
+    //open browser and login using confirmation link and edit account (browser)
+    app.user().editAccount(url, username, "password");
+    //check that user is logged in (HttpSessionHelper)
+    app.http().login(username, "password");
+    Assertions.assertTrue(app.http().isLoggedIn());*/
+  }
+
   //Hw-18
   @Test
   public void canRegisterUser() throws InterruptedException {
@@ -14,7 +47,7 @@ public class UserRegistrationTests extends TestBase {
     //var username = "user1";
     var email = String.format("%s@localhost", username);
     //creat user(email) on mail server (JamesCliHelper)
-    app.james().addUser(email, "password");
+    app.jamesCli().addUser(email, "password");
     //open browser and fill sing up form and submit (browser)
     app.user().signUp(username, email);
     //wait for email (MailHelper)
@@ -34,7 +67,7 @@ public class UserRegistrationTests extends TestBase {
     var username = "user1";
     var email = String.format("%s@localhost", username);
     //creat user(email) on mail server (JamesCliHelper)
-    app.james().addUser(email, "password");
+    app.jamesCli().addUser(email, "password");
     //open browser and fill sing up form and submit (browser)
     app.user().signUp(username, email);
     //wait for email (MailHelper)
@@ -46,6 +79,6 @@ public class UserRegistrationTests extends TestBase {
 
   @Test
   public void canCheckListUsers() {
-    var email = app.james().listUsers();
+    var email = app.jamesCli().listUsers();
   }
 }

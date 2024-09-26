@@ -7,13 +7,13 @@ public class JamesTests extends TestBase {
 
   @Test
   public void canCreateUser() {
-    app.james().addUser(String.format("%s@localhost", Util.randomString(5)), "password");
+    app.jamesCli().addUser(String.format("%s@localhost", Util.randomString(5)), "password");
   }
 
   @Test
   public void canRemoveUserAndDrainInbox() {
     app.mail().drain("user1@localhost", "password");
-    app.james().removeUser("user1@localhost");
+    app.jamesCli().removeUser("user1@localhost");
   }
 
 }
