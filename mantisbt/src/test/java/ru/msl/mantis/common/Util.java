@@ -58,11 +58,22 @@ public class Util {
   }
 
   public static String canExtractUrl(List<MailMessage> messages) {
-    var test = messages.get(0).content();
+    var text = messages.get(0).content();
     var pattern = Pattern.compile("http://\\S+");
-    var matcher = pattern.matcher(test);
+    var matcher = pattern.matcher(text);
     if(matcher.find()) {
-      var url = test.substring(matcher.start(), matcher.end());
+      var url = text.substring(matcher.start(), matcher.end());
+      System.out.println(url);
+      return url;
+    }
+    return "Url not found";
+  }
+
+  public static String canExtractUrl(String text) {
+    var pattern = Pattern.compile("http://\\S+");
+    var matcher = pattern.matcher(text);
+    if(matcher.find()) {
+      var url = text.substring(matcher.start(), matcher.end());
       System.out.println(url);
       return url;
     }

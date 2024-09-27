@@ -60,4 +60,14 @@ public class UserHelper extends HelperBase{
     app.driver().get(app.prop("web.baseUrl") + "login_page.php");
   }
 
+  public void startCreation(String name, String email) {
+    if(!app.session().isLoggedIn()) {
+      app.session().login(app.prop("web.username"), app.prop("web.password"));
+    }
+    app.driver().get(app.prop("web.baseUrl") + "manage_user_create_page.php");
+    type(By.name("username"), name);
+    type(By.name("realname"), name);
+    type(By.name("email"), email);
+    click(By.cssSelector("input[type='submit']"));
+  }
 }
