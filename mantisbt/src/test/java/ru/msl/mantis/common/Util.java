@@ -69,15 +69,16 @@ public class Util {
     return "Url not found";
   }
 
-  public static String canExtractUrl(String text) {
-    var pattern = Pattern.compile("http://\\S+");
+  public static String extractUrl(String text) {
+    var pattern = Pattern.compile("http://\\S*");
     var matcher = pattern.matcher(text);
-    if(matcher.find()) {
+    if (matcher.find()) {
       var url = text.substring(matcher.start(), matcher.end());
       System.out.println(url);
       return url;
+    } else {
+      throw new RuntimeException("No URL in text");
     }
-    return "Url not found";
   }
 
 }

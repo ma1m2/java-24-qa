@@ -213,6 +213,28 @@ public class ContactHelper extends HelperBase {
     return result;
   }
 
+  public Map<String,String> getLastNames() {
+    var result = new HashMap<String,String>();
+    List<WebElement> rows = app.driver.findElements(By.name("entry"));
+    for (WebElement row : rows) {
+      var id = row.findElement(By.tagName("input")).getAttribute("id");
+      var lastNames = row.findElements(By.tagName("td")).get(1).getText();
+      result.put(id, lastNames);
+    }
+    return result;
+  }
+
+  public Map<String,String> getFirstNames() {
+    var result = new HashMap<String,String>();
+    List<WebElement> rows = app.driver.findElements(By.name("entry"));
+    for (WebElement row : rows) {
+      var id = row.findElement(By.tagName("input")).getAttribute("id");
+      var lastNames = row.findElements(By.tagName("td")).get(2).getText();
+      result.put(id, lastNames);
+    }
+    return result;
+  }
+
   public StringBuffer getInfoFromHomePage(ContactData contact) {
     openHomePage();
     StringBuffer sb = new StringBuffer();
@@ -254,7 +276,43 @@ public class ContactHelper extends HelperBase {
     return sb;
   }
 
-  private void openEditContactPage(ContactData contact) {
+  public void openEditContactPage(ContactData contact) {
     selectRowById(contact).findElements(By.tagName("td")).get(7).findElement(By.tagName("a")).click();
   }
+
+  public String getLastNameFromEditPage() {
+    return app.driver.findElement(By.name("lastname")).getAttribute("value");
+  }
+
+  public String getFirstNameFromEditPage() {
+    return app.driver.findElement(By.name("firstname")).getAttribute("value");
+  }
+
+  public String getAddressFromEditPage() {
+    return app.driver.findElement(By.name("address")).getAttribute("value");
+  }
+
+  public String getPhonesFromEditPage() {
+    StringBuffer sb = new StringBuffer();
+    var home = app.driver.findElement(By.name("home")).getAttribute("value");
+    var mobile = app.driver.findElement(By.name("mobile")).getAttribute("value");
+    var work = app.driver.findElement(By.name("work")).getAttribute("value");
+    if(home != null && ! home.equals("")) sb.append(home).append("\n");
+    if(mobile != null && ! mobile.equals("")) sb.append(mobile).append("\n");
+    if(work != null && ! work.equals("")) sb.append(work);
+    return sb.toString();
+  }
+
+  public String getEmailsFromEditPage() {
+    StringBuffer sb = new StringBuffer();
+    var email = app.driver.findElement(By.name("email")).getAttribute("value");
+    var email2 = app.driver.findElement(By.name("email2")).getAttribute("value");
+    var email3 = app.driver.findElement(By.name("email3")).getAttribute("value");
+    if(email != null && ! email.equals("")) sb.append(email).append("\n");
+    if(email2 != null && ! email2.equals("")) sb.append(email2).append("\n");
+    if(email3 != null && ! email3.equals("")) sb.append(email3);
+    return sb.toString();
+  }
+
+
 }

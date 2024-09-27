@@ -25,7 +25,7 @@ public class UserCreationDevMailTests extends TestBase {
     //wait for email (DevMailHelper)
     var message = app.devMail().receive(user, Duration.ofSeconds(10));
     //extract confirmation link
-    var url = Util.canExtractUrl(message);
+    var url = Util.extractUrl(message);
     //open browser and login using confirmation link and edit account (browser)
     app.user().editAccount(url, user.name(), password);
     //check that user is logged in (HttpSessionHelper)
@@ -37,7 +37,7 @@ public class UserCreationDevMailTests extends TestBase {
   public void canReceiveDevMail(){
     user = new DevMailUser("v-ehjdp6", "80FCED54015726551BAE71C79106A7FB048C9227");
     var message = app.devMail().receive(user, Duration.ofSeconds(10));
-    var url = Util.canExtractUrl(message);//not work
+    var url = Util.extractUrl(message);//not work
     //System.out.println(message);
     System.out.println(url);
   }
