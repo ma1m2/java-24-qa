@@ -19,6 +19,7 @@ public class AppManager {
   private UserHelper user;
   private DevMailHelper devMail;
   private RestApiHelper rest;
+  private SoapApiHelper soap;
 
   public void init(String browser, Properties prop) {
     this.prop = prop;
@@ -94,6 +95,13 @@ public class AppManager {
       rest = new RestApiHelper(this);
     }
     return rest;
+  }
+
+  public SoapApiHelper soap() {
+    if(soap == null) {
+      soap = new SoapApiHelper(this);
+    }
+    return soap;
   }
 
   public String prop(String key) {
