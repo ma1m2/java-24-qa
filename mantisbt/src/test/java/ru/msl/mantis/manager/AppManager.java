@@ -18,6 +18,7 @@ public class AppManager {
   private MailHelper mail;
   private UserHelper user;
   private DevMailHelper devMail;
+  private RestApiHelper rest;
 
   public void init(String browser, Properties prop) {
     this.prop = prop;
@@ -54,10 +55,6 @@ public class AppManager {
     return http;
   }
 
-  public String prop(String key) {
-    return prop.getProperty(key);
-  }
-
   public JamesCliHelper jamesCli() {
     if(jamesCli == null) {
       jamesCli = new JamesCliHelper(this);
@@ -90,5 +87,16 @@ public class AppManager {
       devMail = new DevMailHelper(this);
     }
     return devMail;
+  }
+
+  public RestApiHelper rest() {
+    if(rest == null) {
+      rest = new RestApiHelper(this);
+    }
+    return rest;
+  }
+
+  public String prop(String key) {
+    return prop.getProperty(key);
   }
 }
