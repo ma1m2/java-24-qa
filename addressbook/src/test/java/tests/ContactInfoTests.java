@@ -66,7 +66,7 @@ public class ContactInfoTests extends TestBase {
               .collect(Collectors.joining("\n"));
     }));
     var emails = app.contact().getEmails();
-    System.out.println(emails + " ==================== " + expected);
+    //System.out.println(emails + " ==================== " + expected);
     Assertions.assertEquals(expected, emails);
   }
 
