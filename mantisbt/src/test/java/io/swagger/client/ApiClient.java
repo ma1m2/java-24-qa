@@ -51,10 +51,12 @@ import io.swagger.client.auth.Authentication;
 import io.swagger.client.auth.HttpBasicAuth;
 import io.swagger.client.auth.ApiKeyAuth;
 import io.swagger.client.auth.OAuth;
+import ru.msl.mantis.manager.AppManager;
 
 public class ApiClient {
+    private AppManager app = new AppManager();
 
-    private String basePath = "http://localhost/mantisbt-2.26.3/api/rest";
+    private String basePath = app.prop("basePath");
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private String tempFolderPath = null;
